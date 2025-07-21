@@ -2,28 +2,28 @@
 
 @font-face {
     font-family: 'Deacon-light';
-    src: url('/fonts/DeaconCondensedTest-Light-BF63c8afdd389e2.otf') format('woff2');
+    src: url('../src/assets/fonts/DeaconCondensedTest-Light-BF63c8afdd389e2.otf') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Deacon-normal';
-    src: url('/fonts/DeaconCondensedTest-Medium-BF63c8afddae2eb.otf') format('woff2');
+    src: url('../src/assets/fonts/DeaconTest-Medium-BF63c8afceb851c.otf') format('woff2');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Deacon-bold';
-    src: url('./fonts/DeaconTest-Bold-BF63c8afcee0ca9.otf') format('woff2');
+    src: url('../src/assets/fonts/DeaconTest-Bold-BF63c8afcee0ca9.otf') format('woff2');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Audiowide';
-    src: url('./fonts/Audiowide-Regular.ttf') format('woff2');
+    src: url('../src/assets/fonts/Audiowide-Regular.ttf') format('woff2');
     font-weight: bold;
     font-style: normal;
 }
