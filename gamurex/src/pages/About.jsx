@@ -8,6 +8,7 @@ import MarqueeRight from "../components/aboutSections/MarqueeRight";
 import NewsletterSection from "../components/aboutSections/NewsletterSection";
 import TestimonialSection from "../components/aboutSections/TestimonialSection";
 import MyJourney from "../components/aboutSections/MyJourney";
+import bgDrops from "../assets/images/bgDrops.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,7 +34,6 @@ const About = () => {
 
   const headingRef = useRef(null);
   const paragraphRef = useRef(null);
-  const imageRef = useRef(null);
   const cursorRef = useRef(null);
   const motiveHeadingRef = useRef(null);
   const motiveTextRef = useRef(null);
@@ -61,17 +61,6 @@ const About = () => {
       scrollTrigger: {
         trigger: paragraphRef.current,
         start: "top 85%",
-      },
-    });
-
-    gsap.from(imageRef.current, {
-      opacity: 0,
-      scale: 0.3,
-      duration: 0.1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: imageRef.current,
-        start: "top 90%",
       },
     });
 
@@ -134,7 +123,10 @@ const About = () => {
   };
 
   return (
-    <div className="overflow-hidden w-full bg-[#ebbdbd] pt-20">
+    <div
+      style={{ backgroundImage: `url(${bgDrops})` }}
+      className="overflow-hidden w-full bg-contain pt-20"
+    >
       <MarqueeLeft />
 
       <div className="w-[90%] max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 my-16">
@@ -165,10 +157,9 @@ const About = () => {
           onMouseMove={handleMouseMove}
         >
           <img
-            ref={imageRef}
             src={tanmay1}
             alt="About Image"
-            className="rounded-2xl w-full max-w-md shadow-lg transition-all duration-500 ease-in-out group-hover:scale-105"
+            className="rounded-2xl w-full max-w-md shadow-lg transition-all duration-500 ease-in-out group-hover:scale-90"
           />
 
           {/* Floating Tanmay Cursor */}

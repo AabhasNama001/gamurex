@@ -4,6 +4,7 @@ import journey2 from "../../assets/images/tanmay/tanmay3.webp";
 import journey3 from "../../assets/images/tanmay/tanmay4.webp";
 import bgBlue1 from "../../assets/images/bgBlue1.png";
 import bgBlue2 from "../../assets/images/bgBlue2.png";
+import bgDrops from "../../assets/images/bgDrops.jpg";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -72,7 +73,10 @@ const MyJourney = () => {
   }, []);
 
   return (
-    <section className="w-full bg-white py-16 px-4 sm:px-6 lg:px-8 relative">
+    <section
+      style={{ backgroundImage: `url(${bgDrops})` }}
+      className="w-full bg-contain py-16 px-4 sm:px-6 lg:px-8 relative"
+    >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start gap-10">
         {/* Left: Circular Images + Heading */}
         <div className="md:w-1/2 flex flex-col items-center mx-auto md:mt-30 bg-cover">
@@ -136,7 +140,7 @@ const MyJourney = () => {
         </div>
       </div>
       <div>
-        <img className="bg-cover h-60 -left-40 top-0 absolute" src={bgBlue2} alt="" />
+        <img className="h-60 -left-40 top-0 absolute" alt="" />
       </div>
     </section>
   );

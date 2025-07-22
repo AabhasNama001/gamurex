@@ -72,7 +72,7 @@ const Customize = () => {
   return (
     <div
       ref={sectionRef}
-      className="w-full mt-40 bg-black text-white py-20 px-4 sm:px-8 md:px-16 lg:px-24"
+      className="w-full mt-20 overflow-x-hidden bg-black text-white py-20 px-4 sm:px-8 md:px-16 lg:px-24"
     >
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="customize-title text-3xl md:text-5xl font-bold mb-6 tracking-tight">

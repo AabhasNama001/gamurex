@@ -23,7 +23,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full text-white shadow-md fixed top-6 left-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between backdrop-blur-sm px-4 py-3 rounded-4xl">
+      <div className="max-w-7xl mb-4 mx-auto flex items-center justify-between backdrop-blur-sm px-4 py-3 rounded-4xl">
         {/* Left: Hamburger */}
         <div>
           <button onClick={toggleSidebar} className="text-2xl">

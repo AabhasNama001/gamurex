@@ -1,26 +1,27 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import bgDrops from "../../assets/images/bgDrops.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
   {
-    name: "Aarav",
+    name: "Steve",
     handle: "@pro_gamer69",
     quote:
       "Tanmay’s journey showed me that consistency matters more than anything. Truly motivating!",
     avatar: "https://i.pravatar.cc/150?img=3",
   },
   {
-    name: "Riya",
+    name: "Gwen",
     handle: "@stream_fan",
     quote:
       "I used to doubt myself until I saw Scout’s grind. His story literally changed how I approach my goals.",
     avatar: "https://i.pravatar.cc/150?img=5",
   },
   {
-    name: "Dev",
+    name: "Tony",
     handle: "@aspire_esports",
     quote:
       "Watching ScoutOP isn’t just fun — it’s a masterclass in discipline and strategy.",
@@ -47,7 +48,10 @@ const TestimonialSection = () => {
   }, []);
 
   return (
-    <section className="bg-[#f3f4f6] py-16 px-4 sm:px-8 text-black">
+    <section
+      style={{ backgroundImage: `url(${bgDrops})` }}
+      className="bg-contain py-16 px-4 sm:px-8 text-black"
+    >
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-3xl sm:text-5xl font-bold mb-12">
           What People Are Saying
@@ -57,7 +61,7 @@ const TestimonialSection = () => {
             <div
               key={index}
               ref={(el) => (cardsRef.current[index] = el)}
-              className="bg-white rounded-2xl p-6 shadow-lg flex flex-col items-center text-center space-y-4 hover:shadow-2xl transition-all duration-300"
+              className="bg-[#d6d2e3] rounded-2xl p-6 shadow-lg flex flex-col items-center text-center space-y-4 hover:shadow-2xl transition-all duration-300"
             >
               {/* Avatar bubble */}
               <img
@@ -73,7 +77,8 @@ const TestimonialSection = () => {
 
               {/* Name + handle */}
               <div className="text-sm text-gray-500 font-semibold">
-                — {item.name} <span className="block text-xs">{item.handle}</span>
+                — {item.name}{" "}
+                <span className="block text-xs">{item.handle}</span>
               </div>
             </div>
           ))}

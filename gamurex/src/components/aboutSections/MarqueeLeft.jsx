@@ -2,7 +2,7 @@ import star from "../../assets/images/star.webp";
 
 const MarqueeLeft = () => {
   return (
-    <div className="relative bg-black flex w-max animate-marquee1 gap-8">
+    <div className="relative bg-black flex w-max animate-marquee1 mt-6 gap-8">
       {[...Array(2)].map((_, j) => (
         <div key={j} className="flex gap-8">
           {[...Array(10)].map((_, i) => (

@@ -378,6 +378,12 @@ const Products = () => {
       </div>
 
       <div>
+        <h2 className="text-2xl text-[#030376] md:text-3xl font-bold text-center py-10">
+          More products launching soon...
+        </h2>
+      </div>
+
+      <div>
         <Customize />
       </div>
     </div>
