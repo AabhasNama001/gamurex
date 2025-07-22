@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import bannerVideo from "../assets/videos/bannerVideo.mp4";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/productSections/ProductCard";
 import cpu1 from "../assets/images/cpus/cpu2.webp";
 import cpu2 from "../assets/images/cpus/cpu3.webp";
 import cpu3 from "../assets/images/cpus/cpu5.webp";
@@ -48,7 +48,7 @@ import controller8 from "../assets/images/gamingControllers/gc8.webp";
 import controller9 from "../assets/images/gamingControllers/gc9.webp";
 import bgBlue3 from "../assets/images/bgBlue3.png";
 import bgDrops from "../assets/images/bgDrops.jpg";
-import Customize from "../components/Customize";
+import Customize from "../components/productSections/Customize";
 
 const Products = () => {
   const [active, setActive] = useState("Headset");
@@ -63,73 +63,254 @@ const Products = () => {
       category: "Headset",
       bgImage: headset8,
       products: [
-        { image: headset1, title: "HyperX Cloud II", price: "$99" },
-        { image: headset2, title: "HyperX Cloud Alpha", price: "$109" },
-        { image: headset3, title: "HyperX Cloud Stinger Core", price: "$59" },
-        { image: headset4, title: "HyperX Cloud Revolver", price: "$119" },
-        { image: headset8, title: "HyperX Cloud MIX", price: "$129" },
-        { image: headset6, title: "HyperX CloudX Flight", price: "$139" },
-        { image: headset7, title: "HyperX Cloud Orbit S", price: "$299" },
-        { image: headset5, title: "HyperX Cloud Stinger", price: "$49" },
-        { image: headset9, title: "HyperX Cloud Core", price: "$69" },
-        { image: headset10, title: "HyperX Cloud Chat", price: "$29" },
-        { image: headset11, title: "HyperX Cloud PS", price: "$89" },
         {
+          id: "headset_1",
+          image: headset1,
+          title: "HyperX Cloud II",
+          price: "$99",
+        },
+        {
+          id: "headset_2",
+          image: headset2,
+          title: "HyperX Cloud Alpha",
+          price: "$109",
+        },
+        {
+          id: "headset_3",
+          image: headset3,
+          title: "HyperX Cloud Stinger Core",
+          price: "$59",
+        },
+        {
+          id: "headset_4",
+          image: headset4,
+          title: "HyperX Cloud Revolver",
+          price: "$119",
+        },
+        {
+          id: "headset_5",
+          image: headset8,
+          title: "HyperX Cloud MIX",
+          price: "$129",
+        },
+        {
+          id: "headset_6",
+          image: headset6,
+          title: "HyperX CloudX Flight",
+          price: "$139",
+        },
+        {
+          id: "headset_7",
+          image: headset7,
+          title: "HyperX Cloud Orbit S",
+          price: "$299",
+        },
+        {
+          id: "headset_8",
+          image: headset5,
+          title: "HyperX Cloud Stinger",
+          price: "$49",
+        },
+        {
+          id: "headset_9",
+          image: headset9,
+          title: "HyperX Cloud Core",
+          price: "$69",
+        },
+        {
+          id: "headset_10",
+          image: headset10,
+          title: "HyperX Cloud Chat",
+          price: "$29",
+        },
+        {
+          id: "headset_11",
+          image: headset11,
+          title: "HyperX Cloud PS",
+          price: "$89",
+        },
+        {
+          id: "headset_12",
           image: headset12,
           title: "HyperX Cloud Alpha Wireless",
           price: "$199",
         },
-        { image: headset13, title: "HyperX Cloud Buds", price: "$39" },
-        { image: headset14, title: "HyperX Cloud Flight S", price: "$159" },
-        { image: headset15, title: "HyperX Cloud II Wireless", price: "$149" },
+        {
+          id: "headset_13",
+          image: headset13,
+          title: "HyperX Cloud Buds",
+          price: "$39",
+        },
+        {
+          id: "headset_14",
+          image: headset14,
+          title: "HyperX Cloud Flight S",
+          price: "$159",
+        },
+        {
+          id: "headset_15",
+          image: headset15,
+          title: "HyperX Cloud II Wireless",
+          price: "$149",
+        },
       ],
     },
     {
       category: "Controller",
       bgImage: controller8,
       products: [
-        { image: controller1, title: "GameSir T4 Pro", price: "$45" },
-        { image: controller2, title: "GameSir G4 Pro", price: "$49" },
-        { image: controller3, title: "GameSir X2 Bluetooth", price: "$59" },
-        { image: controller4, title: "GameSir G3s", price: "$35" },
-        { image: controller5, title: "GameSir F4 Falcon", price: "$29" },
-        { image: controller6, title: "GameSir X3 Type-C", price: "$89" },
-        { image: controller7, title: "GameSir T1s", price: "$39" },
-        { image: controller8, title: "GameSir VX2 AimSwitch", price: "$99" },
-        { image: controller9, title: "GameSir G7 SE", price: "$69" },
+        {
+          id: "controller_1",
+          image: controller1,
+          title: "GameSir T4 Pro",
+          price: "$45",
+        },
+        {
+          id: "controller_2",
+          image: controller2,
+          title: "GameSir G4 Pro",
+          price: "$49",
+        },
+        {
+          id: "controller_3",
+          image: controller3,
+          title: "GameSir X2 Bluetooth",
+          price: "$59",
+        },
+        {
+          id: "controller_4",
+          image: controller4,
+          title: "GameSir G3s",
+          price: "$35",
+        },
+        {
+          id: "controller_5",
+          image: controller5,
+          title: "GameSir F4 Falcon",
+          price: "$29",
+        },
+        {
+          id: "controller_6",
+          image: controller6,
+          title: "GameSir X3 Type-C",
+          price: "$89",
+        },
+        {
+          id: "controller_7",
+          image: controller7,
+          title: "GameSir T1s",
+          price: "$39",
+        },
+        {
+          id: "controller_8",
+          image: controller8,
+          title: "GameSir VX2 AimSwitch",
+          price: "$99",
+        },
+        {
+          id: "controller_9",
+          image: controller9,
+          title: "GameSir G7 SE",
+          price: "$69",
+        },
       ],
     },
     {
       category: "CPU",
       bgImage: cpu8,
       products: [
-        { image: cpu1, title: "Ryzen 3 3200G", price: "$79" },
-        { image: cpu2, title: "Ryzen 5 5600G", price: "$139" },
-        { image: cpu3, title: "Ryzen 5 7600X", price: "$229" },
-        { image: cpu4, title: "Ryzen 7 5700X", price: "$249" },
-        { image: cpu5, title: "Ryzen 7 7700X", price: "$329" },
-        { image: cpu6, title: "Ryzen 9 5900X", price: "$389" },
-        { image: cpu7, title: "Ryzen 9 7900X", price: "$459" },
-        { image: cpu8, title: "Ryzen Threadripper 3960X", price: "$1399" },
-        { image: cpu9, title: "Ryzen 5 4600G", price: "$119" },
+        { id: "cpu_1", image: cpu1, title: "Ryzen 3 3200G", price: "$79" },
+        { id: "cpu_2", image: cpu2, title: "Ryzen 5 5600G", price: "$139" },
+        { id: "cpu_3", image: cpu3, title: "Ryzen 5 7600X", price: "$229" },
+        { id: "cpu_4", image: cpu4, title: "Ryzen 7 5700X", price: "$249" },
+        { id: "cpu_5", image: cpu5, title: "Ryzen 7 7700X", price: "$329" },
+        { id: "cpu_6", image: cpu6, title: "Ryzen 9 5900X", price: "$389" },
+        { id: "cpu_7", image: cpu7, title: "Ryzen 9 7900X", price: "$459" },
+        {
+          id: "cpu_8",
+          image: cpu8,
+          title: "Ryzen Threadripper 3960X",
+          price: "$1399",
+        },
+        { id: "cpu_9", image: cpu9, title: "Ryzen 5 4600G", price: "$119" },
       ],
     },
     {
       category: "Mouse",
       bgImage: mouse5,
       products: [
-        { image: mouse1, title: "Redragon M908 Impact", price: "$39" },
-        { image: mouse2, title: "Redragon M601 CENTROPHORUS", price: "$25" },
-        { image: mouse3, title: "Redragon M602 RGB", price: "$29" },
-        { image: mouse4, title: "Redragon M612 Predator", price: "$34" },
-        { image: mouse5, title: "Redragon M913 Impact Elite", price: "$49" },
-        { image: mouse6, title: "Redragon M811 Aatrox", price: "$35" },
-        { image: mouse7, title: "Redragon M808 Storm", price: "$39" },
-        { image: mouse8, title: "Redragon M990 LEGEND", price: "$59" },
-        { image: mouse9, title: "Redragon M690 Mirage", price: "$27" },
-        { image: mouse10, title: "Redragon M990 RGB", price: "$55" },
-        { image: mouse11, title: "Redragon M719 Invader", price: "$29" },
-        { image: mouse12, title: "Redragon M801 Sniper", price: "$49" },
+        {
+          id: "mouse_1",
+          image: mouse1,
+          title: "Redragon M908 Impact",
+          price: "$39",
+        },
+        {
+          id: "mouse_2",
+          image: mouse2,
+          title: "Redragon M601 CENTROPHORUS",
+          price: "$25",
+        },
+        {
+          id: "mouse_3",
+          image: mouse3,
+          title: "Redragon M602 RGB",
+          price: "$29",
+        },
+        {
+          id: "mouse_4",
+          image: mouse4,
+          title: "Redragon M612 Predator",
+          price: "$34",
+        },
+        {
+          id: "mouse_5",
+          image: mouse5,
+          title: "Redragon M913 Impact Elite",
+          price: "$49",
+        },
+        {
+          id: "mouse_6",
+          image: mouse6,
+          title: "Redragon M811 Aatrox",
+          price: "$35",
+        },
+        {
+          id: "mouse_7",
+          image: mouse7,
+          title: "Redragon M808 Storm",
+          price: "$39",
+        },
+        {
+          id: "mouse_8",
+          image: mouse8,
+          title: "Redragon M990 LEGEND",
+          price: "$59",
+        },
+        {
+          id: "mouse_9",
+          image: mouse9,
+          title: "Redragon M690 Mirage",
+          price: "$27",
+        },
+        {
+          id: "mouse_10",
+          image: mouse10,
+          title: "Redragon M990 RGB",
+          price: "$55",
+        },
+        {
+          id: "mouse_11",
+          image: mouse11,
+          title: "Redragon M719 Invader",
+          price: "$29",
+        },
+        {
+          id: "mouse_12",
+          image: mouse12,
+          title: "Redragon M801 Sniper",
+          price: "$49",
+        },
       ],
     },
   ];
@@ -186,12 +367,11 @@ const Products = () => {
 
       {/* 🛍️ Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-6 py-10 xl:px-8">
-        {selectedCategory?.products.map((product, index) => (
+        {selectedCategory?.products.map((product) => (
           <ProductCard
-            key={`${selectedCategory.category}-${index}`}
-            image={product.image}
-            title={product.title}
-            price={product.price}
+            key={product.id}
+            {...product}
+            category={selectedCategory.category}
             bgColor={selectedCategory.bgColor}
           />
         ))}

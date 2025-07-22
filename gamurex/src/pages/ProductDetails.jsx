@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useLayoutEffect } from "react";
+import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import bgSpace from "../assets/images/bg.jpg";
-import ProductTabs from "../components/ProductTabs";
+import ProductTabs from "../components/productSections/ProductTabs";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import TrustAndPolicySection from "../components/TrustAndPolicySection";
-import ExploreSetup from "../components/ExploreSetup";
+import TrustAndPolicySection from "../components/productSections/TrustAndPolicySection";
+import ExploreSetup from "../components/productSections/ExploreSetup";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,7 +46,9 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const hasScrolledToTop = useRef(false);
 
-  // ✅ Scroll to top once on mount without triggering GSAP issues
+  const [isFav, setIsFav] = useState(false);
+
+  // ✅ Scroll to top once on mount
   useLayoutEffect(() => {
     if (location.pathname === "/product-details" && !hasScrolledToTop.current) {
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -89,7 +92,29 @@ const ProductDetails = () => {
     );
   }
 
-  const { image, title, price, category } = state;
+  const { id, image, title, price, category } = state;
+
+  // 🧠 Load favourites
+  useEffect(() => {
+    const favs = JSON.parse(localStorage.getItem("favourites")) || [];
+    setIsFav(favs.some((item) => item.id === id));
+  }, [id]);
+
+  const toggleFavourite = () => {
+    const favs = JSON.parse(localStorage.getItem("favourites")) || [];
+    const isAlreadyFav = favs.some((item) => item.id === id);
+
+    let updatedFavs;
+    if (isAlreadyFav) {
+      updatedFavs = favs.filter((item) => item.id !== id);
+    } else {
+      updatedFavs = [...favs, { id, image, title, price, category }];
+    }
+
+    localStorage.setItem("favourites", JSON.stringify(updatedFavs));
+    setIsFav(!isAlreadyFav);
+  };
+
   const productInfo =
     ProductInfo.find((info) => info.category === category) || {};
 
@@ -104,7 +129,16 @@ const ProductDetails = () => {
           className="flex flex-col lg:flex-row gap-6 overflow-hidden bg-[#222]/90 rounded-t-xl shadow-lg p-8"
         >
           {/* Left: Image */}
-          <div className="flex-1 flex justify-center items-center blur-target">
+          <div className="flex-1 flex justify-center items-center relative blur-target">
+            {/* 💖 Favourite Button */}
+            <button
+              onClick={toggleFavourite}
+              className="absolute top-0 left-0 m-4 text-2xl text-white bg-black/60 p-2 rounded-full"
+              title={isFav ? "Remove from favourites" : "Add to favourites"}
+            >
+              {isFav ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+            </button>
+
             <img
               src={image}
               alt={title}
@@ -131,17 +165,14 @@ const ProductDetails = () => {
               Buy It Now
             </button>
             <div className="mt-6 space-y-4 text-gray-400 text-sm blur-target">
-              {/* SKU */}
               <div className="flex gap-4">
                 <h3>SKU:</h3>
                 <h4>Gaming Logi G Pro X</h4>
               </div>
-              {/* Tags */}
               <div className="flex gap-4">
                 <h3 className="font-bold">Tags:</h3>
                 <h4>Console, Gaming, Mechanical</h4>
               </div>
-              {/* Categories */}
               <div className="flex gap-4">
                 <h3 className="font-bold">Categories:</h3>
                 <h4>
@@ -167,10 +198,9 @@ const ProductDetails = () => {
           <TrustAndPolicySection />
         </div>
       </div>
-      <div>
-        <div className="mt-4">
-          <ExploreSetup />
-        </div>{" "}
+
+      <div className="mt-4">
+        <ExploreSetup />
       </div>
     </div>
   );

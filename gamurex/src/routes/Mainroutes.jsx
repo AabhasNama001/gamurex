@@ -4,6 +4,7 @@ import About from "../pages/About";
 import Products from "../pages/Products";
 import PageNotFound from "../pages/PageNotFound";
 import ProductDetails from "../pages/ProductDetails";
+import Favourites from "../pages/Favourites";
 
 const Mainroutes = () => {
   return (
@@ -12,6 +13,7 @@ const Mainroutes = () => {
       <Route path="/about" element={<About />} />
       <Route path="/products" element={<Products />} />
       <Route path="/product-details" element={<ProductDetails />} />
+      <Route path="/fav" element={<Favourites />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

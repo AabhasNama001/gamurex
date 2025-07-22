@@ -42,7 +42,9 @@ const Navbar = () => {
 
         {/* Right: Icons */}
         <div className="flex items-center gap-4 text-xl">
-          <FiHeart className="cursor-pointer" />
+          <NavLink to="/fav">
+            <FiHeart className="cursor-pointer" />
+          </NavLink>
           <FiShoppingCart className="cursor-pointer" />
         </div>
       </div>

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import headsetImg from "../assets/images/headsets/h18.webp";
-import mouseImg from "../assets/images/mouses/mouse4.webp";
-import controllerImg from "../assets/images/gamingControllers/gc1.webp";
-import cpuImg from "../assets/images/cpus/cpu2.webp";
+import headsetImg from "../../assets/images/headsets/h18.webp";
+import mouseImg from "../../assets/images/mouses/mouse4.webp";
+import controllerImg from "../../assets/images/gamingControllers/gc1.webp";
+import cpuImg from "../../assets/images/cpus/cpu2.webp";
 gsap.registerPlugin(ScrollTrigger);
 import { useNavigate } from "react-router-dom";
 
