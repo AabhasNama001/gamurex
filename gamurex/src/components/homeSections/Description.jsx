@@ -12,22 +12,22 @@ const Description = () => {
         muted
         loop
         playsInline
-        className="absolute brightness-50 top-0 left-0 w-full h-[70vh] md:h-[100vh] object-cover z-0"
+        className="absolute brightness-50 top-0 left-0 w-full h-[70vh] md:h-[80vh] lg:h-[100vh] object-cover z-0"
       />
 
       {/* Dark overlay */}
       {/* <div className="absolute inset-0 bg-black/90 z-10 pointer-events-none"></div> */}
 
       {/* Content */}
-      <div className="absolute z-20 flex flex-col items-center justify-center gap-8 p-10 sm:pt-24 sm:flex-row lg:w-full lg:justify-around">
+      <div className="absolute h-full z-20 flex flex-col items-center justify-center gap-8 p-10 sm:pt-24 sm:flex-row lg:w-full lg:justify-around">
         <div className="text-white text-left space-y-3">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase">
             Game Like a Pro
           </h1>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase">
             with the
           </h1>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold uppercase text-[#00ffff]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-[#00ffff]">
             Ultimate PC
           </h1>
           <NavLink to="/products">
@@ -41,7 +41,7 @@ const Description = () => {
         <div>
           <img
             src={cpu10}
-            className="w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px]"
+            className="w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px] xl:mr-30"
           />
         </div>
       </div>

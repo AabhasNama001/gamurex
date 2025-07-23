@@ -43,7 +43,7 @@ const GamurexTitle = ({ imageUrls }) => {
         scale: 1,
         duration: 1.5,
         ease: "power3.out",
-        delay: 5.5,
+        // delay: 5.5,
       }
     );
   }, [imagesLoaded]);
@@ -93,7 +93,7 @@ const GamurexTitle = ({ imageUrls }) => {
   return (
     <h1
       ref={gamurexRef}
-      className="relative font-['Deacon-normal'] cursor-pointer uppercase text-[12vh] sm:text-[16vh] lg:text-[30vh] z-10"
+      className="relative cursor-pointer uppercase max-[350px]:text-[40px] text-[50px] sm:text-[70px] lg:text-[140px] xl:text-[170px] z-10"
     >
       Gamurex
       {imageUrls.map((url, index) => (

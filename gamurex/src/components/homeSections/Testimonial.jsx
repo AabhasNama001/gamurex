@@ -1,6 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation, Pagination} from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -18,7 +18,7 @@ const testimonials = [
     name: "Syble F. Romans",
     address: "from London",
     stars: "⭐⭐⭐⭐⭐",
-    desc: "These headsets deliver crystal-clear audio, enhancing every gaming session. Highly recommended!",
+    desc: "These headsets deliver clear audio, enhancing every gaming session. Highly recommended!",
     image: test1,
   },
   {
@@ -46,14 +46,14 @@ const testimonials = [
     name: "Timothy A. Thompson",
     address: "from Washington D.C",
     stars: "⭐⭐⭐⭐⭐",
-    desc: "Comfortable headsets with immersive sound, perfect for team communication and single-player immersion.",
+    desc: "Comfortable headsets with immersive sound, perfect for communication and single-player.",
     image: test5,
   },
   {
-    name: "Peter Pots",
+    name: "Pretty S. Pots",
     address: "from Peru",
     stars: "⭐⭐⭐⭐⭐",
-    desc: "This gaming mouse offers excellent grip and customizable buttons, boosting my gameplay significantly.",
+    desc: "Gaming mouse offers excellent grip and customizable buttons, boosting my gameplay.",
     image: test6,
   },
 ];
@@ -73,12 +73,12 @@ const Testimonial = () => {
       </div>
 
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={[Navigation, Pagination]}
         slidesPerView={1}
         spaceBetween={20}
+        loop={true}
         navigation
         pagination={{ clickable: true }}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
         breakpoints={{
           640: { slidesPerView: 1 },
           768: { slidesPerView: 2 },

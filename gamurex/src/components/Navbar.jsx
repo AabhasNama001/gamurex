@@ -41,11 +41,14 @@ const Navbar = () => {
         </div>
 
         {/* Right: Icons */}
-        <div className="flex items-center gap-4 text-xl">
+        <div className="flex items-center gap-4 text-xl md:text-2xl">
           <NavLink to="/fav">
-            <FiHeart className="cursor-pointer" />
+            <FiHeart className="cursor-pointer hover:text-red-500" />
           </NavLink>
-          <FiShoppingCart className="cursor-pointer" />
+
+          <NavLink to="/cart">
+            <FiShoppingCart className="cursor-pointer hover:text-blue-500" />
+          </NavLink>
         </div>
       </div>
 
