@@ -2,9 +2,7 @@ import React, { useEffect, useRef } from "react";
 import journey1 from "../../assets/images/tanmay/tanmay1.webp";
 import journey2 from "../../assets/images/tanmay/tanmay3.webp";
 import journey3 from "../../assets/images/tanmay/tanmay4.webp";
-import bgBlue1 from "../../assets/images/bgBlue1.png";
-import bgBlue2 from "../../assets/images/bgBlue2.png";
-import bgDrops from "../../assets/images/bgDrops.jpg";
+import bgDrops from "../../assets/images/bgDrops.webp";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -44,10 +42,11 @@ const MyJourney = () => {
           opacity: 1,
           duration: 1.2,
           ease: "back.out(1.7)",
-          delay: i * 0.2,
+          delay: i * 0.6,
           scrollTrigger: {
             trigger: el,
             start: "top 85%",
+            toggleActions: "play none none reset",
           },
         }
       );
@@ -66,6 +65,7 @@ const MyJourney = () => {
           scrollTrigger: {
             trigger: el,
             start: "top 95%",
+            toggleActions: "play none none reset",
           },
         }
       );

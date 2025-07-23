@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import bgSpace from "../assets/images/bg.jpg";
+import bgSpace from "../assets/images/bg.webp";
 import ProductTabs from "../components/productSections/ProductTabs";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TrustAndPolicySection from "../components/productSections/TrustAndPolicySection";
 import ExploreSetup from "../components/productSections/ExploreSetup";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import CustomCursor from "../components/productSections/CustomCursor";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -120,6 +121,7 @@ const ProductDetails = () => {
 
   return (
     <div>
+      <CustomCursor />
       <div
         style={{ backgroundImage: `url(${bgSpace})` }}
         className="min-h-screen bg-cover pt-28 px-6 lg:px-28 pb-10"

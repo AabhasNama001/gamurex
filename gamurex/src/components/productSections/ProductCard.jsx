@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import bgWhite from "../../assets/images/bgWhite.webp";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -62,6 +62,21 @@ const ProductCard = ({
     toast.success("Product added to cart!");
   };
 
+  const [showCursor, setShowCursor] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const titleRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const rect = titleRef.current.getBoundingClientRect();
+    setCursorPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleMouseEnter = () => setShowCursor(true);
+  const handleMouseLeave = () => setShowCursor(false);
+
   return (
     <div className="relative w-full max-w-xs sm:max-w-sm mx-auto mt-16">
       {/* Heart Icon */}
@@ -96,10 +111,30 @@ const ProductCard = ({
 
         <div className="mt-4">
           <h3
+            ref={titleRef}
             onClick={handleClick}
-            className="text-2xl cursor-pointer md:text-3xl text-[rgb(9,9,72)] text-center pt-10 font-bold"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onMouseMove={handleMouseMove}
+            className="relative text-2xl cursor-pointer md:text-3xl text-[rgb(9,9,72)] text-center pt-10 font-bold"
           >
             {title}
+
+            {showCursor && (
+              <div
+                className="pointer-events-none absolute z-50 px-3 py-2 text-xs md:text-sm font-semibold rounded-full shadow-lg transition-transform duration-150 ease-out"
+                style={{
+                  transform: `translate(${cursorPos.x - 80}px, ${
+                    cursorPos.y - 80
+                  }px)`,
+                  background: "linear-gradient(135deg, #ff5e5e, #ff0066)",
+                  color: "#fff",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Click for Details...
+              </div>
+            )}
           </h3>
         </div>
 

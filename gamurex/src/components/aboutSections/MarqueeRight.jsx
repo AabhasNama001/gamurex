@@ -8,7 +8,7 @@ const MarqueeRight = () => {
               {[...Array(10)].map((_, i) => (
                 <div key={`${j}-${i}`} className="flex items-center gap-4">
                   <img
-                    src="/logo2.png"
+                    src="/logo2.webp"
                     alt="Logo"
                     className="h-6 w-auto object-contain"
                     draggable="false"

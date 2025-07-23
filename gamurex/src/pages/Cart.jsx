@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import bgSpace from "../assets/images/bg.jpg";
+import bgSpace from "../assets/images/bg.webp";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -48,7 +48,7 @@ const Cart = () => {
   return (
     <div
       style={{ backgroundImage: `url(${bgSpace})` }}
-      className="min-h-screen bg-cover pt-30 py-10 px-4"
+      className="min-h-screen bg-contain pt-30 py-10 px-4 pb-40"
     >
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 text-blue-700 dark:text-blue-300">
         🛒 Your Cart

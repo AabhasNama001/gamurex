@@ -1,7 +1,7 @@
 // components/HeroSection.jsx
 import GamurexTitle from "./GamurexTitle";
 
-import heroBg from "../../assets/images/bg.jpg";
+import heroBg from "../../assets/images/bg.webp";
 import hero1 from "../../assets/images/heroImg1.webp";
 import hero2 from "../../assets/images/heroImg2.webp";
 import hero3 from "../../assets/images/heroImg3.webp";

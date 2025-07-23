@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import bannerVideo from "../assets/videos/bannerVideo.mp4";
+import bannerVideo from "../assets/videos/bannerVideo.webm";
 import ProductCard from "../components/productSections/ProductCard";
 import cpu1 from "../assets/images/cpus/cpu2.webp";
 import cpu2 from "../assets/images/cpus/cpu3.webp";
@@ -46,8 +46,7 @@ import controller6 from "../assets/images/gamingControllers/gc6.webp";
 import controller7 from "../assets/images/gamingControllers/gc7.webp";
 import controller8 from "../assets/images/gamingControllers/gc8.webp";
 import controller9 from "../assets/images/gamingControllers/gc9.webp";
-import bgBlue3 from "../assets/images/bgBlue3.png";
-import bgDrops from "../assets/images/bgDrops.jpg";
+import bgDrops from "../assets/images/bgDrops.webp";
 import Customize from "../components/productSections/Customize";
 
 const Products = () => {

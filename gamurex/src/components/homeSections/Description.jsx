@@ -1,5 +1,5 @@
-import descVid from "../../assets/videos/bgVid.mov";
-import descImg from "../../assets/images/bg.jpg";
+import descVid from "../../assets/videos/bgVid.webm";
+import descImg from "../../assets/images/bg.webp";
 import cpu10 from "../../assets/images/cpus/cpu10.webp";
 import { NavLink } from "react-router-dom";
 

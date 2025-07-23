@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import video404 from "../assets/videos/404.mp4";
-import video404small from "../assets/videos/404small.mp4";
+import video404 from "../assets/videos/404.webm";
+import video404small from "../assets/videos/404small.webm";
 
 const PageNotFound = () => {
   useEffect(() => {

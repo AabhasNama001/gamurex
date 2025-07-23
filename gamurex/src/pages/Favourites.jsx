@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { getFavourites } from "../utils/localStorage";
 import ProductCard from "../components/productSections/ProductCard";
-import bgSpace from "../assets/images/bg.jpg";
+import bgSpace from "../assets/images/bg.webp";
 
 const Favourites = () => {
   const [favourites, setFavourites] = useState([]);

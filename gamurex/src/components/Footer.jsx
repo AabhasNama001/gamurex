@@ -1,9 +1,14 @@
-import { NavLink } from "react-router-dom";
-import logoFooter from "/logo2.png";
-import { FaInstagram } from "react-icons/fa";
-import bgFooter from "../assets/images/bg.jpg";
+import { NavLink, useNavigate } from "react-router-dom";
+import logoFooter from "/logo2.webp";
+import { FaInstagram, FaTwitter, FaFacebook } from "react-icons/fa";
+import bgFooter from "../assets/images/bg.webp";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/");
+  };
   return (
     <footer
       style={{ backgroundImage: `url(${bgFooter})` }}
@@ -13,6 +18,7 @@ const Footer = () => {
         {/* Logo Section */}
         <div className="w-[90%] mx-auto py-10">
           <img
+            onClick={handleClick}
             src={logoFooter}
             alt="Footer Logo"
             className="w-full object-cover max-h-[200px]"
@@ -74,6 +80,23 @@ const Footer = () => {
               >
                 <FaInstagram />
               </a>
+              <a
+                href="https://x.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-400 transition"
+              >
+                <FaTwitter />
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-800 transition"
+              >
+                <FaFacebook />
+              </a>
+
               {/* Add more icons if needed */}
             </div>
           </div>
@@ -89,4 +112,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

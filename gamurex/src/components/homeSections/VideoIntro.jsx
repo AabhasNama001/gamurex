@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
-import bgVid from "../../assets/videos/bgVid2.mp4";
+import bgVid from "../../assets/videos/bgVid2.webm";
 
 const VideoIntro = () => {
   const location = useLocation();

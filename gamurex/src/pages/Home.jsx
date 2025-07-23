@@ -3,13 +3,24 @@ import VideoIntro from "../components/homeSections/VideoIntro";
 import HeroSection from "../components/homeSections/HeroSection";
 import Description from "../components/homeSections/Description";
 import CategSection from "../components/homeSections/categSection";
-import bgVid3 from "../../src/assets/videos/bgVid3.mp4";
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import bgVid3 from "../../src/assets/videos/bgVid3.webm";
+import { useRef, useLayoutEffect } from "react";
+import { useNavigate ,useLocation} from "react-router-dom";
 import Testimonial from "../components/homeSections/Testimonial";
 
 const Home = () => {
   const navigate = useNavigate();
+  
+  const location = useLocation();
+  const hasScrolledToTop = useRef(false);
+
+  // ✅ Scroll to top once on mount without triggering GSAP issues
+  useLayoutEffect(() => {
+    if (location.pathname === "/" && !hasScrolledToTop.current) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      hasScrolledToTop.current = true;
+    }
+  }, [location.pathname]);
 
   /**
    * Navigates to the About page with the state flag set to true,
@@ -48,6 +59,7 @@ const Home = () => {
           ref={videoRef}
           src={bgVid3}
           muted
+          loop
           playsInline
           className="w-full h-auto"
         />

@@ -8,7 +8,7 @@ import MarqueeRight from "../components/aboutSections/MarqueeRight";
 import NewsletterSection from "../components/aboutSections/NewsletterSection";
 import TestimonialSection from "../components/aboutSections/TestimonialSection";
 import MyJourney from "../components/aboutSections/MyJourney";
-import bgDrops from "../assets/images/bgDrops.jpg";
+import bgDrops from "../assets/images/bgDrops.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
