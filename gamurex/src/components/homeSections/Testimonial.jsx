@@ -1,6 +1,7 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination} from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
+import bgSpace from "../../assets/images/bg.jpg";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -60,8 +61,11 @@ const testimonials = [
 
 const Testimonial = () => {
   return (
-    <div className="bg-black py-16 px-4 sm:px-6 lg:px-20 text-white">
-      <div className="text-center mb-10">
+    <div
+      style={{ backgroundImage: `url(${bgSpace})` }}
+      className="bg-cover py-16 px-4 sm:px-6 lg:px-20 text-white pb-40"
+    >
+      <div className="text-center my-10">
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">
           Client Stories <br />
           <span className="text-indigo-600">That Define</span> <br />

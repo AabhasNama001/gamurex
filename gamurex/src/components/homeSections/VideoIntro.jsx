@@ -64,7 +64,7 @@ const VideoIntro = () => {
   return (
     <div
       ref={videoWrapperRef}
-      className="fixed top-0 left-0 w-full h-screen z-50 overflow-hidden bg-black"
+      className="fixed hidden sm:block top-0 left-0 w-full h-screen z-50 overflow-hidden bg-black"
     >
       <video
         ref={videoRef}

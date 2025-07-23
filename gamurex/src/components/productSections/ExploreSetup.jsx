@@ -63,7 +63,7 @@ const ExploreSetup = () => {
   return (
     <section
       ref={containerRef}
-      className="min-h-screen px-6 py-20 bg-black text-white text-center"
+      className="min-h-screen lg:min-h-[700px] px-6 py-20 bg-black text-white text-center"
     >
       <h2 className="text-4xl font-bold mb-12 tracking-wide text-blue-400">
         Explore our Latest Releases

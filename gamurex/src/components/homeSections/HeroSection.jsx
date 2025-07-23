@@ -12,7 +12,7 @@ const imageUrls = [hero1, hero2, hero3, hero4];
 const HeroSection = () => {
   return (
     <div
-      className="w-screen h-[100vh] bg-cover flex flex-col justify-center items-center relative"
+      className="w-screen h-[500px] sm:h-[600px] lg:h-[100vh] bg-cover flex flex-col justify-center items-center relative"
       style={{ backgroundImage: `url(${heroBg})` }}
     >
       <GamurexTitle imageUrls={imageUrls} />

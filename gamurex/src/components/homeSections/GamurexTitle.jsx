@@ -34,6 +34,8 @@ const GamurexTitle = ({ imageUrls }) => {
 
   // Animate title after images loaded
   useEffect(() => {
+    const isMobile = window.innerWidth < 640;
+    const delay = isMobile ? 0.6 : 5.5;
     if (!imagesLoaded) return;
 
     gsap.fromTo(
@@ -43,7 +45,7 @@ const GamurexTitle = ({ imageUrls }) => {
         scale: 1,
         duration: 1.5,
         ease: "power3.out",
-        // delay: 5.5,
+        delay,
       }
     );
   }, [imagesLoaded]);
