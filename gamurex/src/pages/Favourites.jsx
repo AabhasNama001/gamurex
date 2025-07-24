@@ -1,13 +1,16 @@
+// src/pages/Favourites.jsx
 import { useEffect, useState, useRef, useLayoutEffect } from "react";
-import { getFavourites } from "../utils/localStorage";
+import { getFavourites, saveFavourites } from "../utils/localStorage";
 import ProductCard from "../components/productSections/ProductCard";
 import bgSpace from "../assets/images/bg.webp";
+import { useLocation } from "react-router-dom";
 
 const Favourites = () => {
   const [favourites, setFavourites] = useState([]);
   const hasScrolledToTop = useRef(false);
+  const location = useLocation();
 
-  // ✅ Scroll to top once on mount without triggering GSAP issues
+  // Scroll to top on mount
   useLayoutEffect(() => {
     if (location.pathname === "/fav" && !hasScrolledToTop.current) {
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -15,9 +18,17 @@ const Favourites = () => {
     }
   }, [location.pathname]);
 
+  // Load favourites from localStorage on route change
   useEffect(() => {
     setFavourites(getFavourites());
-  }, []);
+  }, [location.pathname]);
+
+  // Handle unfavourite
+  const handleUnfavourite = (id) => {
+    const updated = favourites.filter((item) => item.id !== id);
+    setFavourites(updated);
+    saveFavourites(updated);
+  };
 
   return (
     <div
@@ -31,7 +42,12 @@ const Favourites = () => {
       {favourites.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {favourites.map((item) => (
-            <ProductCard key={item.id} {...item} />
+            <ProductCard
+              key={item.id}
+              {...item}
+              isFavPage={true}
+              onUnfavourite={handleUnfavourite}
+            />
           ))}
         </div>
       ) : (

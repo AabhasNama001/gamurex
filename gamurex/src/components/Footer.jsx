@@ -59,7 +59,7 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h3 className="font-semibold text-lg mb-2">Contact</h3>
-            <p>Ocala, FL 34471, USA</p>
+            <p>Mansarover, 341, Jaipur</p>
             <p>info@gamurex.com</p>
           </div>
 

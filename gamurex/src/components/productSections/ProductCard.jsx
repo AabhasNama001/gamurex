@@ -9,6 +9,12 @@ import { useNavigate } from "react-router-dom";
 import bgWhite from "../../assets/images/bgWhite.webp";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { toast } from "react-toastify";
+import {
+  addFavourite,
+  removeFavourite,
+  getFavourites,
+  isFavourite as checkIsFavourite,
+} from "../../utils/localStorage"; // ✅ Import your utils
 
 const ProductCard = ({
   id,
@@ -17,6 +23,7 @@ const ProductCard = ({
   price,
   category,
   bgImage = `url(${bgWhite})`,
+  onUnfavourite, // ✅ New: optional callback
 }) => {
   const navigate = useNavigate();
   const [isFavourite, setIsFavourite] = useState(false);
@@ -25,17 +32,9 @@ const ProductCard = ({
   const titleRef = useRef(null);
   const animationFrame = useRef(null);
 
-  // Get favourites from localStorage once
+  // ✅ Check favourite status on mount
   useEffect(() => {
-    const favs = localStorage.getItem("favourites");
-    if (favs) {
-      try {
-        const storedFavs = JSON.parse(favs);
-        setIsFavourite(storedFavs.some((item) => item.id === id));
-      } catch (e) {
-        console.error("Invalid favourites format");
-      }
-    }
+    setIsFavourite(checkIsFavourite(id));
   }, [id]);
 
   const handleClick = useCallback(() => {
@@ -45,19 +44,17 @@ const ProductCard = ({
   }, [navigate, id, image, title, price]);
 
   const toggleFavourite = useCallback(() => {
-    const favs = localStorage.getItem("favourites");
-    let storedFavs = favs ? JSON.parse(favs) : [];
-    const exists = storedFavs.find((item) => item.id === id);
-
-    if (exists) {
-      storedFavs = storedFavs.filter((item) => item.id !== id);
+    if (isFavourite) {
+      const updated = removeFavourite(id);
+      setIsFavourite(false);
+      toast.error("Removed from favourites.");
+      if (onUnfavourite) onUnfavourite(id); // ✅ Notify parent
     } else {
-      storedFavs.push({ id, image, title, price, category });
+      addFavourite({ id, image, title, price, category });
+      setIsFavourite(true);
+      toast.success("Added to favourites!");
     }
-
-    localStorage.setItem("favourites", JSON.stringify(storedFavs));
-    setIsFavourite(!exists);
-  }, [id, image, title, price, category]);
+  }, [isFavourite, id, image, title, price, category, onUnfavourite]);
 
   const addToCart = useCallback(() => {
     const cart = localStorage.getItem("cart");
@@ -67,9 +64,7 @@ const ProductCard = ({
     let updatedCart;
     if (existingItem) {
       updatedCart = storedCart.map((item) =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       );
     } else {
       updatedCart = [
@@ -82,7 +77,6 @@ const ProductCard = ({
     toast.success("Product added to cart!");
   }, [id, image, title, price, category]);
 
-  // Mouse move with requestAnimationFrame to reduce lag
   const handleMouseMove = useCallback((e) => {
     if (!titleRef.current) return;
 
@@ -132,7 +126,7 @@ const ProductCard = ({
         )}
       </div>
 
-      {/* Product Image (lazy loading) */}
+      {/* Product Image */}
       <div className="absolute -top-10 md:-top-20 left-1/2 transform -translate-x-1/2 z-10 w-32 h-32 md:w-40 md:h-40">
         <img
           src={image}

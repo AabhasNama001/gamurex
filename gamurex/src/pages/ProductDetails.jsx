@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 import bgSpace from "../assets/images/bg.webp";
 import ProductTabs from "../components/productSections/ProductTabs";
@@ -111,10 +112,14 @@ const ProductDetails = () => {
       : [...favs, { id, image, title, price, category }];
 
     localStorage.setItem("favourites", JSON.stringify(updatedFavs));
+    isFav
+      ? toast.error("Removed from favourites")
+      : toast.success("Added to favourites");
     setIsFav(!isFav);
   };
 
-  const productInfo = ProductInfo.find((info) => info.category === category) || {};
+  const productInfo =
+    ProductInfo.find((info) => info.category === category) || {};
 
   return (
     <div>
@@ -163,7 +168,9 @@ const ProductDetails = () => {
               {productInfo.productDescription}
             </p>
             <button
-              onClick={() => alert("Redirecting to payment...")}
+              onClick={() =>
+                toast.success("Congratulations! Product purchased.")
+              }
               className="mt-4 px-6 py-3 bg-green-700 text-white rounded-full hover:bg-emerald-600 transition-all blur-target"
             >
               Buy It Now
