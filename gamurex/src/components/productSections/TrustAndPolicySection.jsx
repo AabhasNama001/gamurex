@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 gsap.registerPlugin(ScrollTrigger);
 
 const trustCards = [
@@ -47,34 +48,42 @@ const faqs = [
 const TrustAndPolicySection = () => {
   const sectionRef = useRef(null);
 
-  useEffect(() => {
-    const elems = sectionRef.current.querySelectorAll(".fade-in");
-    elems.forEach((el) => {
-      gsap.fromTo(
-        el,
-        { filter: "blur(8px)", opacity: 0, y: 50 },
-        {
-          filter: "blur(0px)",
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray(".fade-in").forEach((el) => {
+        gsap.fromTo(
+          el,
+          {
+            filter: "blur(8px)",
+            opacity: 0,
+            y: 40,
           },
-        }
-      );
-    });
+          {
+            filter: "blur(0px)",
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none none",
+              once: true,
+            },
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <div
       ref={sectionRef}
-      className="py-20 rounded-b-xl px-6 lg:px-20 bg-[#222]/90 text-white space-y-20"
+      className="py-20 px-6 lg:px-20 bg-[#222]/90 text-white space-y-20 rounded-b-xl"
     >
-      {/* Why Choose Us Section */}
+      {/* Why Choose Us */}
       <div className="text-center space-y-10 fade-in">
         <h2 className="text-4xl font-bold text-blue-400">Why Choose Us</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -94,9 +103,9 @@ const TrustAndPolicySection = () => {
       </div>
 
       {/* Divider */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full fade-in"></div>
+      <div className="h-[2px] w-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full fade-in" />
 
-      {/* Shipping & Returns FAQs */}
+      {/* FAQs */}
       <div className="fade-in">
         <h2 className="text-4xl font-bold text-blue-400 text-center mb-10">
           Shipping & Returns

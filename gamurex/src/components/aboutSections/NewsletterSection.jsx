@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -6,39 +6,51 @@ gsap.registerPlugin(ScrollTrigger);
 
 const NewsletterSection = () => {
   const sectionRef = useRef(null);
+  const timeoutRef = useRef(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    gsap.from(sectionRef.current, {
+    const el = sectionRef.current;
+
+    gsap.from(el, {
       opacity: 0,
-      y: 60,
-      duration: 1,
+      y: 50,
+      duration: 0.8,
+      ease: "power2.out",
       scrollTrigger: {
-        trigger: sectionRef.current,
+        trigger: el,
         start: "top 85%",
+        toggleActions: "play none none none", // ensures animation only plays once
       },
     });
+
+    return () => {
+      ScrollTrigger.kill(); // Cleanup
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    // Basic dummy validation
-    if (email.includes("@") && email.includes(".")) {
-      setStatus("success");
-      setEmail("");
-    } else {
-      setStatus("error");
-    }
+      const isValid = email.includes("@") && email.includes(".");
 
-    setTimeout(() => setStatus(null), 3000);
-  };
+      setStatus(isValid ? "success" : "error");
+      if (isValid) setEmail("");
+
+      // Clear any existing timeout and set a new one
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => setStatus(null), 3000);
+    },
+    [email]
+  );
 
   return (
     <section
       ref={sectionRef}
-      className="bg-[black] text-white py-16 px-6 text-center w-full"
+      className="bg-black text-white py-16 px-6 text-center w-full"
     >
       <div className="max-w-2xl mx-auto space-y-6">
         <h2 className="text-3xl sm:text-4xl font-bold">
@@ -60,6 +72,7 @@ const NewsletterSection = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
           />
           <button
             type="submit"
@@ -69,7 +82,6 @@ const NewsletterSection = () => {
           </button>
         </form>
 
-        {/* Feedback Message */}
         {status === "success" && (
           <p className="text-green-400 font-medium mt-2">
             ✅ You’re on the list, gamer!

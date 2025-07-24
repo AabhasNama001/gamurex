@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Components & Assets
 import tanmay1 from "../assets/images/tanmay/tanmay2.webp";
+import bgDrops from "../assets/images/bgDrops.webp";
 import MarqueeLeft from "../components/aboutSections/MarqueeLeft";
 import MarqueeRight from "../components/aboutSections/MarqueeRight";
 import NewsletterSection from "../components/aboutSections/NewsletterSection";
 import TestimonialSection from "../components/aboutSections/TestimonialSection";
 import MyJourney from "../components/aboutSections/MyJourney";
-import bgDrops from "../assets/images/bgDrops.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,7 +26,16 @@ const About = () => {
   const location = useLocation();
   const hasScrolledToTop = useRef(false);
 
-  // ✅ Scroll to top once on mount without triggering GSAP issues
+  const headingRef = useRef(null);
+  const paragraphRef = useRef(null);
+  const motiveHeadingRef = useRef(null);
+  const headingRefs = useRef([]);
+  const cursorRef = useRef(null);
+
+  const [showCursor, setShowCursor] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+
+  // Scroll to top once when the page is loaded
   useLayoutEffect(() => {
     if (location.pathname === "/about" && !hasScrolledToTop.current) {
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -32,16 +43,7 @@ const About = () => {
     }
   }, [location.pathname]);
 
-  const headingRef = useRef(null);
-  const paragraphRef = useRef(null);
-  const cursorRef = useRef(null);
-  const motiveHeadingRef = useRef(null);
-  const motiveTextRef = useRef(null);
-  const headingRefs = useRef([]);
-
-  const [showCursor, setShowCursor] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-
+  // GSAP initial fade-ins
   useEffect(() => {
     gsap.from(headingRef.current, {
       opacity: 0,
@@ -75,6 +77,7 @@ const About = () => {
     });
   }, []);
 
+  // Drop animation overlay per line
   useEffect(() => {
     headingRefs.current.forEach((line, i) => {
       const drop = document.createElement("span");
@@ -114,6 +117,7 @@ const About = () => {
     });
   }, []);
 
+  // Cursor movement handler
   const handleMouseMove = (e) => {
     const bounds = e.currentTarget.getBoundingClientRect();
     setCursorPos({
@@ -127,21 +131,23 @@ const About = () => {
       style={{ backgroundImage: `url(${bgDrops})` }}
       className="overflow-hidden w-full bg-contain pt-20"
     >
+      {/* Marquee Top */}
       <MarqueeLeft />
 
+      {/* Intro Section */}
       <div className="w-[90%] max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 my-16">
         {/* Left - Text */}
         <div className="md:w-1/2 text-center md:text-left">
           <p className="opacity-60 mb-5">About Us</p>
           <h1
             ref={headingRef}
-            className="text-4xl md:text-5xl font-bold text-[#000000] mb-6"
+            className="text-4xl md:text-5xl font-bold text-black mb-6"
           >
             The Man Behind the Game
           </h1>
           <p
             ref={paragraphRef}
-            className="text-lg md:text-xl text-[#000000] leading-relaxed"
+            className="text-lg md:text-xl text-black leading-relaxed"
           >
             Myself Tanmay, popularly known as ScoutOP (or just Scout). I am a
             renowned Indian professional esports player, streamer, and content
@@ -149,7 +155,7 @@ const About = () => {
           </p>
         </div>
 
-        {/* Right - Image with custom cursor */}
+        {/* Right - Image + Cursor */}
         <div
           className="md:w-1/2 flex justify-center relative group"
           onMouseEnter={() => setShowCursor(true)}
@@ -159,14 +165,12 @@ const About = () => {
           <img
             src={tanmay1}
             alt="About Image"
-            className="rounded-2xl w-full max-w-md shadow-lg transition-all duration-500 ease-in-out group-hover:scale-90"
+            className="rounded-2xl w-full max-w-md shadow-lg transition-transform duration-500 ease-in-out group-hover:scale-90"
           />
-
-          {/* Floating Tanmay Cursor */}
           {showCursor && (
             <div
               ref={cursorRef}
-              className="absolute pointer-events-none px-3 py-1 bg-[purple]/80 text-white text-sm sm:text-base rounded-full shadow-xl transition-opacity duration-300"
+              className="absolute pointer-events-none px-3 py-1 bg-purple-600/80 text-white text-sm sm:text-base rounded-full shadow-xl transition-opacity duration-300"
               style={{
                 left: cursorPos.x,
                 top: cursorPos.y,
@@ -179,9 +183,13 @@ const About = () => {
         </div>
       </div>
 
+      {/* Marquee Bottom */}
       <MarqueeRight />
+
+      {/* Timeline Section */}
       <MyJourney />
 
+      {/* Motivational Lines */}
       <section id="do-it-section" className="py-12 sm:py-20">
         <h2
           ref={motiveHeadingRef}
@@ -202,6 +210,7 @@ const About = () => {
         </div>
       </section>
 
+      {/* Testimonials & Newsletter */}
       <TestimonialSection />
       <NewsletterSection />
     </div>

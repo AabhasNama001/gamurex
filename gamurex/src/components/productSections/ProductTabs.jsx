@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -9,55 +9,56 @@ const ProductTabs = () => {
   const contentRef = useRef(null);
 
   useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
     gsap.fromTo(
-      contentRef.current,
+      el,
       { filter: "blur(8px)", opacity: 0 },
       {
         filter: "blur(0px)",
         opacity: 1,
-        duration: 1.5,
+        duration: 1.2,
         ease: "power2.out",
         scrollTrigger: {
-          trigger: contentRef.current,
-          start: "top 80%",
+          trigger: el,
+          start: "top 85%",
+          once: true, // Only animate once for performance
         },
       }
     );
   }, []);
 
-  const tabClasses = (tab) =>
-    `px-2 py-1 text-[8px] min-[400px]:px-4 min-[400px]:py-2 min-[400px]:text-[10px] md:text-lg sm:text-base font-medium rounded-t-lg transition-colors duration-300 lg:text-2xl lg:px-6 lg:py-3
-  ${
-    activeTab === tab
-      ? "bg-black text-white"
-      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-  }`;
+  const tabClasses = useCallback(
+    (tab) =>
+      `px-2 py-1 text-[8px] min-[400px]:px-4 min-[400px]:py-2 min-[400px]:text-[10px] md:text-lg sm:text-base font-medium rounded-t-lg transition-colors duration-300 lg:text-2xl lg:px-6 lg:py-3 ${
+        activeTab === tab
+          ? "bg-black text-white"
+          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+      }`,
+    [activeTab]
+  );
 
   return (
     <div className="w-full mx-auto bg-[#222]/90 px-4 pb-6 pt-10 lg:pt-16">
-      {/* Tab Headings */}
+      {/* Tabs */}
       <div className="flex justify-start space-x-2 border-b border-gray-300">
-        <button
-          className={tabClasses("description")}
-          onClick={() => setActiveTab("description")}
-        >
-          Description
-        </button>
-        <button
-          className={tabClasses("info")}
-          onClick={() => setActiveTab("info")}
-        >
-          Additional Information
-        </button>
-        <button
-          className={tabClasses("reviews")}
-          onClick={() => setActiveTab("reviews")}
-        >
-          Reviews
-        </button>
+        {["description", "info", "reviews"].map((tab) => (
+          <button
+            key={tab}
+            className={tabClasses(tab)}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab === "description"
+              ? "Description"
+              : tab === "info"
+              ? "Additional Information"
+              : "Reviews"}
+          </button>
+        ))}
       </div>
 
-      {/* Tab Content with Blur Animation */}
+      {/* Content */}
       <div
         ref={contentRef}
         className="px-6 py-10 shadow-md rounded-b-xl border border-t-0 border-gray-300"
@@ -84,11 +85,9 @@ const ProductTabs = () => {
               <div>
                 <p className="font-semibold text-gray-400">Admin</p>
                 <div className="flex text-yellow-500 text-sm">
-                  {Array(5)
-                    .fill(0)
-                    .map((_, i) => (
-                      <span key={i}>★</span>
-                    ))}
+                  {"★★★★★".split("").map((star, i) => (
+                    <span key={i}>{star}</span>
+                  ))}
                 </div>
               </div>
             </div>

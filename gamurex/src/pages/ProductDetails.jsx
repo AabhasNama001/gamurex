@@ -1,44 +1,46 @@
 import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import bgSpace from "../assets/images/bg.webp";
-import ProductTabs from "../components/productSections/ProductTabs";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+
+import bgSpace from "../assets/images/bg.webp";
+import ProductTabs from "../components/productSections/ProductTabs";
 import TrustAndPolicySection from "../components/productSections/TrustAndPolicySection";
 import ExploreSetup from "../components/productSections/ExploreSetup";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import CustomCursor from "../components/productSections/CustomCursor";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// 🧠 Static Info by Category
 const ProductInfo = [
   {
     category: "Headset",
     productDescription:
       "Premium gaming headset with immersive sound, soft ear cushions, and crystal-clear voice communication.",
     productSpecifications:
-      "Over-ear design with memory foam ear cushions, 50mm drivers, detachable noise-canceling mic, braided cable, 7.1 surround sound support, and durable adjustable steel headband for long gaming sessions.",
+      "Over-ear design, 50mm drivers, detachable noise-canceling mic, 7.1 surround sound, steel headband.",
   },
   {
     category: "Mouse",
     productDescription:
-      "Precision-engineered gaming mouse offering high DPI, fast response, and ergonomic comfort for gamers.",
+      "Precision-engineered gaming mouse offering high DPI, fast response, and ergonomic comfort.",
     productSpecifications:
-      "Ergonomic right-handed shape with textured side grips, 16000 DPI optical sensor, RGB lighting, 7 programmable buttons, ultra-light braided cable, and PTFE feet for smooth glide.",
+      "16000 DPI, RGB lighting, 7 programmable buttons, PTFE feet, ergonomic grip.",
   },
   {
     category: "Gaming Controller",
     productDescription:
-      "Versatile wireless controller with responsive buttons, long battery life, and support for multiple platforms.",
+      "Versatile wireless controller with responsive buttons, long battery life, and platform compatibility.",
     productSpecifications:
-      "Wireless controller with dual vibration feedback, textured grip handles, responsive analog sticks, turbo mode, 600mAh battery, USB-C charging, and compatibility with PC, Android, and console platforms.",
+      "Dual vibration, turbo mode, USB-C, 600mAh battery, cross-platform support.",
   },
   {
     category: "CPU",
     productDescription:
-      "High-performance processor built for multitasking, gaming, and content creation with reliable speed and efficiency.",
+      "High-performance processor for multitasking, gaming, and content creation.",
     productSpecifications:
-      "6-core, 12-thread architecture with base clock of 3.7GHz, boost up to 4.6GHz, 65W TDP, integrated graphics, support for DDR4 RAM and PCIe 4.0 lanes.",
+      "6-core/12-thread, 3.7GHz base, 4.6GHz boost, PCIe 4.0, 65W TDP.",
   },
 ];
 
@@ -46,10 +48,11 @@ const ProductDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const hasScrolledToTop = useRef(false);
+  const contentRef = useRef(null);
 
   const [isFav, setIsFav] = useState(false);
 
-  // ✅ Scroll to top once on mount
+  // Scroll to top on mount
   useLayoutEffect(() => {
     if (location.pathname === "/product-details" && !hasScrolledToTop.current) {
       window.scrollTo({ top: 0, behavior: "instant" });
@@ -57,8 +60,7 @@ const ProductDetails = () => {
     }
   }, [location.pathname]);
 
-  const contentRef = useRef(null);
-
+  // GSAP blur-in animation
   useEffect(() => {
     if (contentRef.current) {
       const elements = contentRef.current.querySelectorAll(".blur-target");
@@ -79,6 +81,7 @@ const ProductDetails = () => {
     }
   }, []);
 
+  // Handle product not found
   if (!state) {
     return (
       <div className="text-center py-32">
@@ -95,7 +98,7 @@ const ProductDetails = () => {
 
   const { id, image, title, price, category } = state;
 
-  // 🧠 Load favourites
+  // Sync favourite status from localStorage
   useEffect(() => {
     const favs = JSON.parse(localStorage.getItem("favourites")) || [];
     setIsFav(favs.some((item) => item.id === id));
@@ -103,25 +106,20 @@ const ProductDetails = () => {
 
   const toggleFavourite = () => {
     const favs = JSON.parse(localStorage.getItem("favourites")) || [];
-    const isAlreadyFav = favs.some((item) => item.id === id);
-
-    let updatedFavs;
-    if (isAlreadyFav) {
-      updatedFavs = favs.filter((item) => item.id !== id);
-    } else {
-      updatedFavs = [...favs, { id, image, title, price, category }];
-    }
+    const updatedFavs = isFav
+      ? favs.filter((item) => item.id !== id)
+      : [...favs, { id, image, title, price, category }];
 
     localStorage.setItem("favourites", JSON.stringify(updatedFavs));
-    setIsFav(!isAlreadyFav);
+    setIsFav(!isFav);
   };
 
-  const productInfo =
-    ProductInfo.find((info) => info.category === category) || {};
+  const productInfo = ProductInfo.find((info) => info.category === category) || {};
 
   return (
     <div>
       <CustomCursor />
+
       <div
         style={{ backgroundImage: `url(${bgSpace})` }}
         className="min-h-screen bg-cover pt-28 px-6 lg:px-28 pb-10"
@@ -130,12 +128,11 @@ const ProductDetails = () => {
           ref={contentRef}
           className="flex flex-col lg:flex-row gap-6 overflow-hidden bg-[#222]/90 rounded-t-xl shadow-lg p-8"
         >
-          {/* Left: Image */}
+          {/* Left Section */}
           <div className="flex-1 flex justify-center items-center relative blur-target">
-            {/* 💖 Favourite Button */}
             <button
               onClick={toggleFavourite}
-              className="absolute top-0 left-0 m-4 text-2xl text-white bg-black/60 p-2 rounded-full"
+              className="absolute top-0 left-0 m-4 z-11 text-2xl text-white bg-black/60 p-2 rounded-full"
               title={isFav ? "Remove from favourites" : "Add to favourites"}
             >
               {isFav ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
@@ -145,15 +142,15 @@ const ProductDetails = () => {
               <img
                 src={image}
                 alt={title}
-                className="w-72 h-72 object-contain sm:w-90 sm:h-90 lg:w-120 lg:h-120 transition duration-300 z-10 relative"
+                loading="lazy"
+                className="w-72 h-72 sm:w-90 sm:h-90 lg:w-120 lg:h-120 object-contain transition duration-300 z-10 relative"
               />
-
-              {/* Radiating color glow */}
-              <div className="absolute inset-0 pointer-events-none rounded-[50%] before:absolute before:inset-0 before:rounded-[50%] before:opacity-0 before:scale-75 before:transition-all before:duration-500 before:blur-2xl group-hover:before:opacity-60 group-hover:before:scale-125 before:bg-[radial-gradient(circle,rgba(255,255,255,0.5),rgba(255,255,255,0.2),transparent_80%)]" />
+              {/* Glow on hover */}
+              <div className="hidden md:block absolute inset-0 pointer-events-none rounded-[50%] before:absolute before:inset-0 before:rounded-[50%] before:opacity-0 before:scale-75 before:transition-all before:duration-500 before:blur-2xl group-hover:before:opacity-60 group-hover:before:scale-125 before:bg-[radial-gradient(circle,rgba(255,255,255,0.5),rgba(255,255,255,0.2),transparent_80%)]" />
             </div>
           </div>
 
-          {/* Right: Info */}
+          {/* Right Section */}
           <div className="flex-1 space-y-4 text-center lg:text-start tracking-wider">
             <h1 className="text-2xl lg:text-4xl xl:text-6xl font-bold text-blue-300 blur-target">
               {title}
@@ -171,6 +168,7 @@ const ProductDetails = () => {
             >
               Buy It Now
             </button>
+
             <div className="mt-6 space-y-4 text-gray-400 text-sm blur-target">
               <div className="flex gap-4">
                 <h3>SKU:</h3>
@@ -182,9 +180,7 @@ const ProductDetails = () => {
               </div>
               <div className="flex gap-4">
                 <h3 className="font-bold">Categories:</h3>
-                <h4>
-                  CPU's, Gaming Mouse, Gaming Controllers, Wireless Headset
-                </h4>
+                <h4>CPU's, Gaming Mouse, Controllers, Headset</h4>
               </div>
             </div>
 

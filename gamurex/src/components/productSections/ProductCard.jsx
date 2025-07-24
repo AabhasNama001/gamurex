@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import bgWhite from "../../assets/images/bgWhite.webp";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -14,20 +20,33 @@ const ProductCard = ({
 }) => {
   const navigate = useNavigate();
   const [isFavourite, setIsFavourite] = useState(false);
+  const [showCursor, setShowCursor] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const titleRef = useRef(null);
+  const animationFrame = useRef(null);
 
+  // Get favourites from localStorage once
   useEffect(() => {
-    const storedFavs = JSON.parse(localStorage.getItem("favourites")) || [];
-    setIsFavourite(storedFavs.some((item) => item.id === id));
+    const favs = localStorage.getItem("favourites");
+    if (favs) {
+      try {
+        const storedFavs = JSON.parse(favs);
+        setIsFavourite(storedFavs.some((item) => item.id === id));
+      } catch (e) {
+        console.error("Invalid favourites format");
+      }
+    }
   }, [id]);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     navigate("/product-details", {
       state: { id, image, title, price },
     });
-  };
+  }, [navigate, id, image, title, price]);
 
-  const toggleFavourite = () => {
-    let storedFavs = JSON.parse(localStorage.getItem("favourites")) || [];
+  const toggleFavourite = useCallback(() => {
+    const favs = localStorage.getItem("favourites");
+    let storedFavs = favs ? JSON.parse(favs) : [];
     const exists = storedFavs.find((item) => item.id === id);
 
     if (exists) {
@@ -38,20 +57,21 @@ const ProductCard = ({
 
     localStorage.setItem("favourites", JSON.stringify(storedFavs));
     setIsFavourite(!exists);
-  };
+  }, [id, image, title, price, category]);
 
-  const addToCart = () => {
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+  const addToCart = useCallback(() => {
+    const cart = localStorage.getItem("cart");
+    let storedCart = cart ? JSON.parse(cart) : [];
     const existingItem = storedCart.find((item) => item.id === id);
 
     let updatedCart;
     if (existingItem) {
-      // Increase quantity
       updatedCart = storedCart.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       );
     } else {
-      // Add new item
       updatedCart = [
         ...storedCart,
         { id, image, title, price, category, quantity: 1 },
@@ -60,22 +80,43 @@ const ProductCard = ({
 
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     toast.success("Product added to cart!");
-  };
+  }, [id, image, title, price, category]);
 
-  const [showCursor, setShowCursor] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const titleRef = useRef(null);
+  // Mouse move with requestAnimationFrame to reduce lag
+  const handleMouseMove = useCallback((e) => {
+    if (!titleRef.current) return;
 
-  const handleMouseMove = (e) => {
     const rect = titleRef.current.getBoundingClientRect();
-    setCursorPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
 
-  const handleMouseEnter = () => setShowCursor(true);
-  const handleMouseLeave = () => setShowCursor(false);
+    if (animationFrame.current) {
+      cancelAnimationFrame(animationFrame.current);
+    }
+
+    animationFrame.current = requestAnimationFrame(() => {
+      setCursorPos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (animationFrame.current) {
+        cancelAnimationFrame(animationFrame.current);
+      }
+    };
+  }, []);
+
+  const cursorStyle = useMemo(
+    () => ({
+      transform: `translate(${cursorPos.x - 80}px, ${cursorPos.y - 80}px)`,
+      background: "linear-gradient(135deg, #ff5e5e, #ff0066)",
+      color: "#fff",
+      whiteSpace: "nowrap",
+    }),
+    [cursorPos]
+  );
 
   return (
     <div className="relative w-full max-w-xs sm:max-w-sm mx-auto mt-16">
@@ -91,9 +132,14 @@ const ProductCard = ({
         )}
       </div>
 
-      {/* Product Image */}
+      {/* Product Image (lazy loading) */}
       <div className="absolute -top-10 md:-top-20 left-1/2 transform -translate-x-1/2 z-10 w-32 h-32 md:w-40 md:h-40">
-        <img src={image} alt={title} className="w-full h-full object-contain" />
+        <img
+          src={image}
+          alt={title}
+          loading="lazy"
+          className="w-full h-full object-contain"
+        />
       </div>
 
       {/* Product Card */}
@@ -113,8 +159,8 @@ const ProductCard = ({
           <h3
             ref={titleRef}
             onClick={handleClick}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={() => setShowCursor(true)}
+            onMouseLeave={() => setShowCursor(false)}
             onMouseMove={handleMouseMove}
             className="relative text-2xl cursor-pointer md:text-3xl text-[rgb(9,9,72)] text-center pt-10 font-bold"
           >
@@ -123,14 +169,7 @@ const ProductCard = ({
             {showCursor && (
               <div
                 className="pointer-events-none absolute z-50 px-3 py-2 text-xs md:text-sm font-semibold rounded-full shadow-lg transition-transform duration-150 ease-out"
-                style={{
-                  transform: `translate(${cursorPos.x - 80}px, ${
-                    cursorPos.y - 80
-                  }px)`,
-                  background: "linear-gradient(135deg, #ff5e5e, #ff0066)",
-                  color: "#fff",
-                  whiteSpace: "nowrap",
-                }}
+                style={cursorStyle}
               >
                 Click for Details...
               </div>
@@ -141,9 +180,9 @@ const ProductCard = ({
         <div className="absolute bottom-6 left-1/2 font-['Deacon-normal'] transform -translate-x-1/2">
           <button
             onClick={addToCart}
-            className="relative overflow-hidden px-4 sm:text-[14px] md:px-5 py-3 xl:px-6 xl:py-4 rounded-full xl:text-lg text-white border-white border-2 transition-all duration-500 bg-gradient-to-r from-black to-gray-700  group"
+            className="relative overflow-hidden px-4 sm:text-[14px] md:px-5 py-3 xl:px-6 xl:py-4 rounded-full xl:text-lg text-white border-white border-2 transition-all duration-500 bg-gradient-to-r from-black to-gray-700 group"
           >
-            <span className="absolute top-0 left-0 w-0 h-full bg-gradient-to-r from-white to-gray-300 transition-all duration-500 group-hover:w-full z-0 group-hover:border-black group-hover:border-2 group-hover:rounded-full"></span>
+            <span className="absolute top-0 left-0 w-0 h-full bg-gradient-to-r from-white to-gray-300 transition-all duration-500 group-hover:w-full z-0 group-hover:border-black group-hover:border-2 group-hover:rounded-full" />
             <span className="relative z-10 transition-colors duration-500 group-hover:text-black">
               Add to Cart
             </span>
@@ -154,4 +193,4 @@ const ProductCard = ({
   );
 };
 
-export default ProductCard;
+export default React.memo(ProductCard);

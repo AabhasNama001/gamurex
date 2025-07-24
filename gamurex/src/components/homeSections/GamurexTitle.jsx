@@ -6,49 +6,63 @@ const GamurexTitle = ({ imageUrls }) => {
   const gamurexRef = useRef(null);
   const imageRefs = useRef([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const splitInstance = useRef(null);
 
   // Wait for all images to load
   useEffect(() => {
-    let loadedCount = 0;
-    const handleLoad = () => {
-      loadedCount++;
-      if (loadedCount === imageUrls.length) setImagesLoaded(true);
+    let loaded = 0;
+    const total = imageUrls.length;
+
+    const checkLoaded = () => {
+      loaded++;
+      if (loaded === total) {
+        setImagesLoaded(true);
+      }
     };
 
     imageRefs.current.forEach((img) => {
-      if (img.complete) {
-        handleLoad();
+      if (img?.complete) {
+        checkLoaded();
       } else {
-        img.addEventListener("load", handleLoad);
+        img?.addEventListener("load", checkLoaded);
       }
     });
 
     return () => {
-      imageRefs.current.forEach((img) =>
-        img?.removeEventListener("load", handleLoad)
-      );
+      imageRefs.current.forEach((img) => {
+        img?.removeEventListener("load", checkLoaded);
+      });
     };
   }, [imageUrls]);
 
-  // Scale reveal animation after image load
+  // Animate text scale on image load
   useEffect(() => {
     if (!imagesLoaded) return;
+
     const isMobile = window.innerWidth < 640;
     const delay = isMobile ? 0.6 : 5.5;
 
     gsap.fromTo(
       gamurexRef.current,
       { scale: 0 },
-      { scale: 1, duration: 1.5, ease: "power3.out", delay }
+      {
+        scale: 1,
+        duration: 1.5,
+        ease: "power3.out",
+        delay,
+      }
     );
   }, [imagesLoaded]);
 
-  // SplitType load animation
+  // SplitType animation (once only)
   useEffect(() => {
-    if (!imagesLoaded) return;
+    if (!imagesLoaded || !gamurexRef.current) return;
 
-    const split = new SplitType(gamurexRef.current, { types: "chars" });
-    gsap.from(split.chars, {
+    splitInstance.current = new SplitType(gamurexRef.current, {
+      types: "chars",
+    });
+
+    gsap.from(splitInstance.current.chars, {
       y: 80,
       opacity: 0,
       rotateX: -90,
@@ -57,57 +71,20 @@ const GamurexTitle = ({ imageUrls }) => {
       ease: "back.out(1.7)",
       delay: 0.4,
     });
+
+    return () => {
+      splitInstance.current?.revert();
+    };
   }, [imagesLoaded]);
 
-  // Hover logic + parallax + glow
+  // Hover and floating logic
   useEffect(() => {
     if (!imagesLoaded) return;
 
     const gamurexText = gamurexRef.current;
     const images = imageRefs.current;
 
-    const handleMouseEnter = () => {
-      gsap.to(images, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        ease: "back.out(1.7)",
-        stagger: {
-          each: 0.1,
-          from: "random",
-        },
-      });
-
-      // Multicolor text glow
-      gsap.to(gamurexText, {
-        textShadow: `
-          0 0 30px blue,
-          0 0 20px yellow,
-          0 0 20px red,
-          0 0 30px orange
-        `,
-        duration: 0.4,
-      });
-    };
-
-    const handleMouseLeave = () => {
-      gsap.to(images, {
-        opacity: 0,
-        scale: 0,
-        duration: 0.5,
-        ease: "power2.in",
-        stagger: {
-          each: 0.1,
-          from: "random",
-        },
-      });
-
-      gsap.to(gamurexText, {
-        textShadow: "0 0 0 transparent",
-        duration: 0.3,
-      });
-    };
-
+    // Hide initially
     gsap.set(images, { opacity: 0, scale: 0 });
 
     // Floating animation
@@ -122,12 +99,47 @@ const GamurexTitle = ({ imageUrls }) => {
       });
     });
 
-    gamurexText.addEventListener("mouseenter", handleMouseEnter);
-    gamurexText.addEventListener("mouseleave", handleMouseLeave);
+    const enter = () => {
+      gsap.to(images, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.5,
+        ease: "back.out(1.7)",
+        stagger: {
+          each: 0.1,
+          from: "random",
+        },
+      });
+
+      // GPU-accelerated glow
+      gamurexText.style.filter = `
+        drop-shadow(0 0 45px #00f)
+        drop-shadow(0 0 10px #ff0)
+        drop-shadow(0 0 15px #f00)
+      `;
+    };
+
+    const leave = () => {
+      gsap.to(images, {
+        opacity: 0,
+        scale: 0,
+        duration: 0.5,
+        ease: "power2.in",
+        stagger: {
+          each: 0.1,
+          from: "random",
+        },
+      });
+
+      gamurexText.style.filter = "none";
+    };
+
+    gamurexText.addEventListener("mouseenter", enter);
+    gamurexText.addEventListener("mouseleave", leave);
 
     return () => {
-      gamurexText.removeEventListener("mouseenter", handleMouseEnter);
-      gamurexText.removeEventListener("mouseleave", handleMouseLeave);
+      gamurexText.removeEventListener("mouseenter", enter);
+      gamurexText.removeEventListener("mouseleave", leave);
     };
   }, [imagesLoaded]);
 
@@ -142,11 +154,10 @@ const GamurexTitle = ({ imageUrls }) => {
           key={index}
           ref={(el) => (imageRefs.current[index] = el)}
           src={url}
-          alt={`Gaming related ${index + 1}`}
+          alt={`Gaming ${index + 1}`}
           loading="lazy"
-          className={`absolute object-cover rounded-lg pointer-events-none transition-opacity
-            max-w-[150px] max-h-[180px] w-[80px] h-[80px] sm:w-[12vw] sm:h-[14vw] md:w-[110px] md:h-[110px] lg:w-[150px] lg:h-[180px]
-          `}
+          className="absolute object-cover rounded-lg pointer-events-none transition-opacity
+            max-w-[150px] max-h-[180px] w-[80px] h-[80px] sm:w-[12vw] sm:h-[14vw] md:w-[110px] md:h-[110px] lg:w-[150px] lg:h-[180px]"
           style={{
             ...(index === 0 && { top: "25px", left: "-5px" }),
             ...(index === 1 && { top: "5px", right: "-75px" }),

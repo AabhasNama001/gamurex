@@ -48,6 +48,7 @@ import controller8 from "../assets/images/gamingControllers/gc8.webp";
 import controller9 from "../assets/images/gamingControllers/gc9.webp";
 import bgDrops from "../assets/images/bgDrops.webp";
 import Customize from "../components/productSections/Customize";
+import productBanner from "../assets/images/productsBanner.webp";
 
 const Products = () => {
   const [active, setActive] = useState("Headset");
@@ -324,12 +325,17 @@ const Products = () => {
     >
       {/* 🎥 Video Banner */}
       <div className="w-full h-[60vh] overflow-hidden lg:h-[80vh]">
+        <img
+          src={productBanner}
+          alt="Banner"
+          className="w-full h-full object-cover md:object-fill md:hidden"
+        />
         <video
           src={bannerVideo}
           autoPlay
           muted
           loop
-          className="w-full h-full object-cover md:object-fill"
+          className="w-full h-full hidden md:block object-cover md:object-fill"
         />
       </div>
 

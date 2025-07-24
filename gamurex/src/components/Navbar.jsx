@@ -4,6 +4,7 @@ import {
   useLayoutEffect,
   useRef,
   useCallback,
+  useMemo,
 } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FiX, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
@@ -29,6 +30,7 @@ const navItems = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const hamburgerRef = useRef(null);
   const sidebarRef = useRef(null);
@@ -49,13 +51,14 @@ const Navbar = () => {
     const cx = btn ? btn.left + btn.width / 2 : vw / 2;
     const cy = btn ? btn.top + btn.height / 2 : vh / 2;
 
-    const distances = [
-      Math.hypot(cx - 0, cy - 0),
-      Math.hypot(cx - vw, cy - 0),
-      Math.hypot(cx - 0, cy - vh),
-      Math.hypot(cx - vw, cy - vh),
-    ];
-    const r = Math.ceil(Math.max(...distances));
+    const r = Math.ceil(
+      Math.max(
+        Math.hypot(cx - 0, cy - 0),
+        Math.hypot(cx - vw, cy - 0),
+        Math.hypot(cx - 0, cy - vh),
+        Math.hypot(cx - vw, cy - vh)
+      )
+    );
 
     return { cx, cy, r };
   }, []);
@@ -79,9 +82,7 @@ const Navbar = () => {
         clipPath: `circle(${r}px at ${cx}px ${cy}px)`,
         duration: 1.95,
         ease: "power3.out",
-      });
-
-      tl.from(
+      }).from(
         sidebarLinkRefs.current,
         {
           y: 20,
@@ -97,33 +98,32 @@ const Navbar = () => {
   const closeSidebar = useCallback(() => {
     const { cx, cy } = getCircleData();
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        gsap.set(sidebarRef.current, {
-          pointerEvents: "none",
-          opacity: 0,
-          clipPath: `circle(0px at ${cx}px ${cy}px)`,
-        });
-        setIsOpen(false);
-      },
-    });
-
-    tl.to(sidebarLinkRefs.current, {
-      y: 20,
-      duration: 0.65,
-      stagger: 0.05,
-      ease: "power2.in",
-    });
-
-    tl.to(
-      sidebarRef.current,
-      {
-        clipPath: `circle(0px at ${cx}px ${cy}px)`,
+    gsap
+      .timeline({
+        onComplete: () => {
+          gsap.set(sidebarRef.current, {
+            pointerEvents: "none",
+            opacity: 0,
+            clipPath: `circle(0px at ${cx}px ${cy}px)`,
+          });
+          setIsOpen(false);
+        },
+      })
+      .to(sidebarLinkRefs.current, {
+        y: 20,
         duration: 0.65,
-        ease: "power3.in",
-      },
-      "<"
-    );
+        stagger: 0.05,
+        ease: "power2.in",
+      })
+      .to(
+        sidebarRef.current,
+        {
+          clipPath: `circle(0px at ${cx}px ${cy}px)`,
+          duration: 0.65,
+          ease: "power3.in",
+        },
+        "<"
+      );
   }, [getCircleData]);
 
   useEffect(() => {
@@ -136,9 +136,7 @@ const Navbar = () => {
   useEffect(() => {
     const backdrop = backdropRef.current;
     if (!backdrop) return;
-    const handleClick = (e) => {
-      if (e.target === backdrop) closeSidebar();
-    };
+    const handleClick = (e) => e.target === backdrop && closeSidebar();
     backdrop.addEventListener("click", handleClick);
     return () => backdrop.removeEventListener("click", handleClick);
   }, [closeSidebar]);
@@ -171,9 +169,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const navigate = useNavigate();
-
-  const handleUserClick = () => {
+  const handleUserClick = useCallback(() => {
     if (isAuthenticated()) {
       logout();
       toast.success("Logged out successfully!");
@@ -181,30 +177,27 @@ const Navbar = () => {
     } else {
       navigate("/register");
     }
-  };
+  }, [navigate]);
 
   return (
     <nav className="w-full text-white shadow-md fixed top-6 left-0 z-50">
       <div className="max-w-7xl mb-4 mx-auto flex items-center justify-between backdrop-blur-sm px-4 py-3 rounded-4xl">
-        <div>
-          <button
-            ref={hamburgerRef}
-            onClick={openSidebar}
-            className="text-2xl relative z-50"
-            aria-label="Open menu"
-          >
-            <span className="text-2xl">
-              <i className="ri-menu-line"></i>
-            </span>
-          </button>
-        </div>
+        {/* Hamburger */}
+        <button
+          ref={hamburgerRef}
+          onClick={openSidebar}
+          className="text-2xl relative z-50"
+          aria-label="Open menu"
+        >
+          <i className="ri-menu-line" />
+        </button>
 
-        <div className="w-32 md:w-50">
-          <NavLink to="/">
-            <img src="/logo2.webp" alt="logo" />
-          </NavLink>
-        </div>
+        {/* Logo */}
+        <NavLink to="/" className="w-32 md:w-50">
+          <img src="/logo2.webp" alt="logo" />
+        </NavLink>
 
+        {/* Icons */}
         <div className="flex items-center gap-4 text-xl md:text-2xl">
           <NavLink to="/fav" aria-label="Favourites">
             <FiHeart className="cursor-pointer hover:text-red-500" />
@@ -213,13 +206,14 @@ const Navbar = () => {
             <FiShoppingCart className="cursor-pointer hover:text-blue-500" />
           </NavLink>
           <FiUser
-            className="cursor-pointer hover:text-gray-600"
             onClick={handleUserClick}
-            aria-label={isAuthenticated() ? "Register" : "Logout" }
+            className="cursor-pointer hover:text-gray-600"
+            aria-label={isAuthenticated() ? "Logout" : "Register"}
           />
         </div>
       </div>
-      {/* Sidebar Overlay */}
+
+      {/* Sidebar */}
       <div
         ref={sidebarRef}
         className="fixed inset-0 z-40 clip-circle-0 opacity-0 pointer-events-none"
@@ -229,7 +223,6 @@ const Navbar = () => {
           className="absolute inset-0 bg-black/60"
           aria-hidden="true"
         />
-
         <div className="relative h-full w-full bg-[#020220] shadow-lg overflow-y-auto">
           <div className="h-full flex flex-col justify-between px-6 pt-4 pb-8">
             <div>
@@ -241,6 +234,7 @@ const Navbar = () => {
                 <FiX />
               </button>
 
+              {/* Sidebar Links */}
               <ul className="flex flex-col ml-4 gap-4 text-[clamp(1.5rem,_5vw,_4rem)] font-medium">
                 {navItems.map((item, index) => (
                   <NavLink
@@ -262,43 +256,58 @@ const Navbar = () => {
               </ul>
             </div>
 
+            {/* Contact Info */}
             <div className="mt-10 pt-6 px-2 text-sm text-white">
               <div className="flex flex-col sm:flex-row justify-between gap-10">
-                <div className="flex items-start gap-2 w-full sm:w-1/3">
-                  <FaMapMarkerAlt className="mt-1 text-lg text-[#8787f1]" />
-                  <p>
-                    221B Baker Street,
-                    <br />
-                    London, UK
-                  </p>
-                </div>
-
-                <div className="flex items-start sm:justify-center gap-2 w-full sm:w-1/3">
-                  <FaPhoneAlt className="mt-1 text-lg text-[#8787f1]" />
-                  <p>+44 20 7946 0958</p>
-                </div>
-
-                <div className="flex flex-col sm:items-end gap-2 w-full sm:w-1/3">
-                  <div className="flex items-center gap-2">
-                    <FaFacebookF className="text-[#3b5998]" />
-                    <p>Facebook</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FaTwitter className="text-[#1da1f2]" />
-                    <p>Twitter</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FaInstagram className="text-[#e1306c]" />
-                    <p>Instagram</p>
-                  </div>
+                <ContactBlock
+                  icon={<FaMapMarkerAlt className="text-[#8787f1]" />}
+                  text={
+                    <>
+                      221B Baker Street,
+                      <br />
+                      London, UK
+                    </>
+                  }
+                />
+                <ContactBlock
+                  icon={<FaPhoneAlt className="text-[#8787f1]" />}
+                  text="+44 20 7946 0958"
+                />
+                <div className="flex flex-col sm:items-end gap-2">
+                  <Social
+                    label="Facebook"
+                    icon={<FaFacebookF className="text-[#3b5998]" />}
+                  />
+                  <Social
+                    label="Twitter"
+                    icon={<FaTwitter className="text-[#1da1f2]" />}
+                  />
+                  <Social
+                    label="Instagram"
+                    icon={<FaInstagram className="text-[#e1306c]" />}
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>{" "}
+      </div>
     </nav>
   );
 };
+
+const ContactBlock = ({ icon, text }) => (
+  <div className="flex items-start gap-2 w-full sm:w-1/3">
+    {icon}
+    <p>{text}</p>
+  </div>
+);
+
+const Social = ({ label, icon }) => (
+  <div className="flex items-center gap-2">
+    {icon}
+    <p>{label}</p>
+  </div>
+);
 
 export default Navbar;

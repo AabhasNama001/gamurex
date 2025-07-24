@@ -42,13 +42,16 @@ const categories = [
 const CategSection = () => {
   const [hovered, setHovered] = useState("headset");
   const navigate = useNavigate();
+
   const titleRefs = useRef({});
   const headingRef = useRef(null);
   const imageContainerRef = useRef(null);
   const textContainerRef = useRef(null);
 
-  // SplitType & ScrollTrigger Entry Animation
+  // ✅ Animate heading and section with SplitType (desktop only)
   useEffect(() => {
+    if (window.innerWidth < 768) return; // skip SplitType on mobile
+
     const split = new SplitType(headingRef.current, { types: "chars" });
 
     gsap.from(split.chars, {
@@ -60,29 +63,19 @@ const CategSection = () => {
       scrollTrigger: {
         trigger: headingRef.current,
         start: "top 90%",
+        once: true,
       },
     });
 
-    gsap.from(imageContainerRef.current, {
+    gsap.from([imageContainerRef.current, textContainerRef.current], {
       y: 50,
       opacity: 0,
-      duration: 1,
+      duration: 1.2,
       ease: "power2.out",
       scrollTrigger: {
-        trigger: imageContainerRef.current,
+        trigger: headingRef.current,
         start: "top 90%",
-      },
-    });
-
-    gsap.from(textContainerRef.current, {
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      delay: 0.2,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: textContainerRef.current,
-        start: "top 90%",
+        once: true,
       },
     });
 
@@ -95,19 +88,24 @@ const CategSection = () => {
     navigate("/products");
   };
 
+  // ✅ Throttle the hover movement using requestAnimationFrame
+  const raf = useRef(null);
   const handleMouseMove = (e, key) => {
-    const el = titleRefs.current[key];
-    if (!el) return;
+    if (!titleRefs.current[key]) return;
 
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
+    cancelAnimationFrame(raf.current);
+    raf.current = requestAnimationFrame(() => {
+      const el = titleRefs.current[key];
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
 
-    gsap.to(el, {
-      x: x * 0.2,
-      y: y * 0.2,
-      duration: 0.3,
-      ease: "power2.out",
+      gsap.to(el, {
+        x: x * 0.2,
+        y: y * 0.2,
+        duration: 0.3,
+        ease: "power2.out",
+      });
     });
   };
 
@@ -136,23 +134,29 @@ const CategSection = () => {
       </h1>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-        {/* Left Image */}
-        <div className="relative h-[200px] md:h-[500px]" ref={imageContainerRef}>
+        {/* LEFT: Hover Images */}
+        <div
+          className="relative h-[200px] md:h-[500px]"
+          ref={imageContainerRef}
+        >
           {categories.map((item) => (
             <img
               key={item.key}
               src={item.image}
+              loading="lazy"
+              decoding="async"
               alt={item.title}
               onClick={handleClick}
-              id={`categ-image-${item.key}`}
               className={`absolute inset-0 w-full h-full object-contain rounded-xl shadow-lg transition-opacity duration-500 transform ${
-                hovered === item.key ? "opacity-100 z-10 scale-105" : "opacity-0 z-0 scale-95"
+                hovered === item.key
+                  ? "opacity-100 z-10 scale-105"
+                  : "opacity-0 z-0 scale-95"
               }`}
             />
           ))}
         </div>
 
-        {/* Right Texts */}
+        {/* RIGHT: Hoverable Category Texts */}
         <div className="space-y-6 text-white" ref={textContainerRef}>
           {categories.map((item) => (
             <div
@@ -160,23 +164,22 @@ const CategSection = () => {
               onMouseEnter={() => setHovered(item.key)}
               className="transition duration-300 cursor-pointer w-fit"
             >
-              {/* Default View */}
+              {/* Static View */}
               <div
                 className={`${
                   hovered === item.key ? "hidden" : "block opacity-60"
-                } withoutHover`}
+                }`}
               >
                 <h1 className="text-xl md:text-2xl font-medium">
                   {item.title}
                 </h1>
               </div>
 
-              {/* Hovered View */}
+              {/* Animated View */}
               <div
                 className={`${
                   hovered === item.key ? "block" : "hidden"
-                } afterHover bg-black/60 p-4 rounded-lg`}
-                id={`categ-text-${item.key}`}
+                } bg-black/60 p-4 rounded-lg`}
                 onMouseMove={(e) => handleMouseMove(e, item.key)}
                 onMouseLeave={() => handleMouseLeave(item.key)}
                 ref={(el) => (titleRefs.current[item.key] = el)}

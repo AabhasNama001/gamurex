@@ -61,7 +61,7 @@ const CustomCursor = () => {
           <div
             key={i}
             ref={(el) => (circleRefs.current[i] = el)}
-            className="fixed top-0 left-0 z-[9999] pointer-events-none rounded-full"
+            className="fixed top-0 hidden md:block left-0 z-[9999] pointer-events-none rounded-full"
             style={{
               width: `${size}px`,
               height: `${size}px`,
