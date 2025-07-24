@@ -121,6 +121,47 @@ const ProductDetails = () => {
   const productInfo =
     ProductInfo.find((info) => info.category === category) || {};
 
+  const handleBuyNow = () => {
+    const loadingToastId = toast.loading("Processing purchase...", {
+      position: "top-center",
+      closeOnClick: false,
+      draggable: false,
+      closeButton: false,
+    });
+
+    setTimeout(() => {
+      toast.update(loadingToastId, {
+        render: ({ closeToast }) => (
+          <div className="max-w-sm sm:max-w-md mx-auto p-4 mt-4 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl shadow-md text-left">
+            <h3 className="text-lg font-bold text-green-600 mb-1">
+              🎉 Product Purchased!
+            </h3>
+            <p className="text-gray-800 dark:text-gray-200 text-sm">
+              You bought{" "}
+              <span className="font-semibold text-indigo-600">{title}</span> for{" "}
+              <span className="font-semibold text-emerald-600">{price}</span>.
+            </p>
+
+            <button
+              onClick={() => {
+                navigate("/products");
+                closeToast();
+              }}
+              className="mt-4 w-full sm:w-auto text-sm font-medium px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-200"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        ),
+        isLoading: false,
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+        closeButton: false,
+      });
+    }, 2500); // Delay for 2.5 seconds
+  };
+
   return (
     <div>
       <CustomCursor />
@@ -168,9 +209,7 @@ const ProductDetails = () => {
               {productInfo.productDescription}
             </p>
             <button
-              onClick={() =>
-                toast.success("Congratulations! Product purchased.")
-              }
+              onClick={handleBuyNow}
               className="mt-4 px-6 py-3 bg-green-700 text-white rounded-full hover:bg-emerald-600 transition-all blur-target"
             >
               Buy It Now
