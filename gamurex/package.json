@@ -26,7 +26,8 @@
     "react-type-animation": "^3.2.0",
     "split-type": "^0.3.4",
     "swiper": "^11.2.10",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "typed.js": "^2.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

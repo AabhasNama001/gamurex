@@ -5,10 +5,12 @@ import {
   useRef,
   useCallback,
 } from "react";
-import { NavLink } from "react-router-dom";
-import { FiX, FiHeart, FiShoppingCart } from "react-icons/fi";
+import { NavLink, useNavigate } from "react-router-dom";
+import { FiX, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import gsap from "gsap";
 import SplitType from "split-type";
+import { isAuthenticated, logout } from "../utils/auth";
+import { toast } from "react-toastify";
 
 import {
   FaMapMarkerAlt,
@@ -22,7 +24,7 @@ const navItems = [
   { to: "/", label: "Home" },
   { to: "/products", label: "Products" },
   { to: "/about", label: "About" },
-  { to: "/login", label: "Login" },
+  { to: "/cart", label: "Cart" },
 ];
 
 const Navbar = () => {
@@ -169,6 +171,18 @@ const Navbar = () => {
     };
   }, []);
 
+  const navigate = useNavigate();
+
+  const handleUserClick = () => {
+    if (isAuthenticated()) {
+      logout();
+      toast.success("Logged out successfully!");
+      navigate("/login");
+    } else {
+      navigate("/register");
+    }
+  };
+
   return (
     <nav className="w-full text-white shadow-md fixed top-6 left-0 z-50">
       <div className="max-w-7xl mb-4 mx-auto flex items-center justify-between backdrop-blur-sm px-4 py-3 rounded-4xl">
@@ -198,9 +212,13 @@ const Navbar = () => {
           <NavLink to="/cart" aria-label="Cart">
             <FiShoppingCart className="cursor-pointer hover:text-blue-500" />
           </NavLink>
+          <FiUser
+            className="cursor-pointer hover:text-gray-600"
+            onClick={handleUserClick}
+            aria-label={isAuthenticated() ? "Register" : "Logout" }
+          />
         </div>
       </div>
-
       {/* Sidebar Overlay */}
       <div
         ref={sidebarRef}

@@ -6,6 +6,7 @@ import test3 from "../../assets/images/testimonial/test9.webp";
 import test4 from "../../assets/images/testimonial/test10.webp";
 import test5 from "../../assets/images/testimonial/test11.webp";
 import test6 from "../../assets/images/testimonial/test12.webp";
+import Typed from "typed.js";
 
 const testimonials = [
   {
@@ -50,12 +51,12 @@ const testimonials = [
     desc: "Gaming mouse offers excellent grip and customizable buttons, boosting my gameplay.",
     image: test6,
   },
-   {
-    name: "Syble F. Romans",
-    address: "from London",
+  {
+    name: "Sally H. McDuffie",
+    address: "from California",
     stars: "⭐⭐⭐⭐⭐",
-    desc: "These headsets deliver clear audio, enhancing every gaming session. Highly recommended!",
-    image: test1,
+    desc: "Controllers are ergonomic and responsive, making long gaming marathons comfortable.",
+    image: test3,
   },
 ];
 
@@ -64,6 +65,26 @@ const Testimonial = () => {
   const tl = useRef(null);
   const [cardWidth, setCardWidth] = useState(0);
   const pos = useRef({ isDown: false, startX: 0, scrollLeft: 0 });
+  const headingRef = useRef(null);
+
+  useEffect(() => {
+    const typed = new Typed(headingRef.current, {
+      strings: [
+        "Client Stories",
+        `Client Stories <span class="bg-gradient-to-r from-blue-400 to-blue-700 text-transparent bg-clip-text">That Define</span>`,
+        `Client Stories <span class="bg-gradient-to-r from-blue-400 to-blue-700 text-transparent bg-clip-text">That Define</span> Our Excellence`,
+      ],
+      typeSpeed: 50,
+      backSpeed: 30,
+      loop: true,
+      smartBackspace: true,
+      showCursor: true,
+    });
+
+    return () => {
+      typed.destroy();
+    };
+  }, []);
 
   useEffect(() => {
     const updateCardWidth = () => {
@@ -75,7 +96,8 @@ const Testimonial = () => {
 
       const containerWidth =
         document.querySelector(".testimonial-wrapper")?.offsetWidth || 0;
-      const paddingFactor = screenWidth < 640 ? 0.85 : screenWidth < 1024 ? 0.9 : 0.95;
+      const paddingFactor =
+        screenWidth < 640 ? 0.85 : screenWidth < 1024 ? 0.9 : 0.95;
       setCardWidth((containerWidth / visibleCards) * paddingFactor);
     };
 
@@ -96,7 +118,10 @@ const Testimonial = () => {
     }
 
     // Duplicate cards
-    const originalCards = Array.from(track.children).slice(0, testimonials.length);
+    const originalCards = Array.from(track.children).slice(
+      0,
+      testimonials.length
+    );
     for (let i = 0; i < 2; i++) {
       originalCards.forEach((card) => {
         const clone = card.cloneNode(true);
@@ -205,10 +230,19 @@ const Testimonial = () => {
 
   return (
     <div className="py-24 px-4 sm:px-6 lg:px-20 bg-cover overflow-hidden text-white">
+      <div className="text-center mb-16 h-[250px]">
+        <h2
+          ref={headingRef}
+          className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight"
+        />
+        <p className="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">
+         Hover to explore what our clients say!
+        </p>
+      </div>
       <div className="testimonial-wrapper relative w-full overflow-hidden">
         <div
           ref={trackRef}
-          className="flex gap-8 w-max cursor-pointer select-none"
+          className="flex gap-8 w-[300px] cursor-pointer select-none"
         >
           {testimonials.map((t, index) => (
             <div
