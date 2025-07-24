@@ -34,7 +34,7 @@ const TestimonialSection = () => {
 
   useEffect(() => {
     const container = containerRef.current;
-    const cardWidth = container.scrollWidth / 2;
+    const cardWidth = container.scrollWidth / 4;
 
     const anim = gsap.to(container, {
       x: `-=${cardWidth}`,
@@ -62,8 +62,8 @@ const TestimonialSection = () => {
 
       <div className="w-full overflow-hidden relative">
         <div className="relative w-full flex justify-center items-center h-[350px]">
-          <div className="absolute left-0 top-0 h-full w-10 rounded-r-full bg-gradient-to-r from-black/90 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 h-full w-10 rounded-l-full bg-gradient-to-l from-black/90 to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 h-full w-10 rounded-r-2xl bg-gradient-to-r from-black/90 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 h-full w-10 rounded-l-2xl bg-gradient-to-l from-black/90 to-transparent z-10 pointer-events-none" />
 
           <div
             ref={containerRef}

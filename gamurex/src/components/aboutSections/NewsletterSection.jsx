@@ -1,64 +1,86 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FaEnvelope } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const NewsletterSection = () => {
   const sectionRef = useRef(null);
-  const timeoutRef = useRef(null);
+  const headingRef = useRef(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
-    const el = sectionRef.current;
+    const ctx = gsap.context(() => {
+      gsap.from(sectionRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+        },
+      });
 
-    gsap.from(el, {
-      opacity: 0,
-      y: 50,
-      duration: 0.8,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: el,
-        start: "top 85%",
-        toggleActions: "play none none none", // ensures animation only plays once
-      },
-    });
+      gsap.from(headingRef.current?.children, {
+        y: 30,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: headingRef.current,
+          start: "top 85%",
+        },
+      });
+    }, sectionRef);
 
-    return () => {
-      ScrollTrigger.kill(); // Cleanup
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
+    return () => ctx.revert();
   }, []);
 
-  const handleSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      const isValid = email.includes("@") && email.includes(".");
+    if (email.includes("@") && email.includes(".")) {
+      setStatus("success");
+      setEmail("");
+    } else {
+      setStatus("error");
+    }
 
-      setStatus(isValid ? "success" : "error");
-      if (isValid) setEmail("");
-
-      // Clear any existing timeout and set a new one
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => setStatus(null), 3000);
-    },
-    [email]
-  );
+    setTimeout(() => setStatus(null), 3000);
+  };
 
   return (
     <section
       ref={sectionRef}
-      className="bg-black text-white py-16 px-6 text-center w-full"
+      className="bg-gradient-to-b from-black via-[#0e0e0e] to-black text-white py-16 px-6 w-full text-center relative overflow-hidden"
     >
-      <div className="max-w-2xl mx-auto space-y-6">
-        <h2 className="text-3xl sm:text-4xl font-bold">
-          Stay Updated with the Grind
+      {/* Animated Icon */}
+      <div className="absolute top-6 left-6 sm:left-10 text-green-400 text-3xl animate-bounce">
+        <FaEnvelope />
+      </div>
+
+      {/* Glow behind */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[200px] w-[200px] bg-green-500 blur-3xl opacity-20 rounded-full pointer-events-none" />
+
+      {/* Content */}
+      <div className="max-w-2xl mx-auto space-y-6 z-10 relative">
+        <h2
+          ref={headingRef}
+          className="text-3xl sm:text-4xl font-bold flex flex-wrap justify-center gap-1"
+        >
+          {"Stay Updated with the Grind".split(" ").map((word, i) => (
+            <span key={i} className="inline-block">
+              {word}
+            </span>
+          ))}
         </h2>
+
         <p className="text-lg sm:text-xl text-gray-300">
-          Get behind-the-scenes content, stream schedules, and exclusive drops —
-          straight to your inbox.
+          Get behind-the-scenes drops, stream schedules, and exclusive content — straight to your inbox.
         </p>
 
         <form
@@ -68,15 +90,14 @@ const NewsletterSection = () => {
           <input
             type="email"
             placeholder="Enter your email"
-            className="px-4 py-3 rounded-full w-full sm:w-2/3 bg-white text-black focus:outline-none focus:ring-2 focus:ring-[#54DD4C]"
+            className="px-4 py-3 rounded-full w-full sm:w-2/3 bg-white/10 backdrop-blur-md text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#54DD4C] transition-all"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            autoComplete="email"
           />
           <button
             type="submit"
-            className="bg-[#54DD4C] hover:bg-green-600 text-black font-semibold px-6 py-3 rounded-full transition-all"
+            className="bg-[#54DD4C] hover:bg-green-500 text-black font-semibold px-6 py-3 rounded-full transition-all"
           >
             Subscribe
           </button>

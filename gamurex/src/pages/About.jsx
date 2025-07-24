@@ -202,7 +202,7 @@ const About = () => {
             <h1
               key={index}
               ref={(el) => (headingRefs.current[index] = el)}
-              className="text-[#566053] text-[5vw] sm:text-[6vh] leading-[3vw] xl:leading-[6vh] font-semibold relative"
+              className="text-[#566053] text-[19px] leading-[18px] sm:text-[32px] sm:leading-[19px] xl:text-[50px] xl:leading-[40px] font-semibold relative"
             >
               {text}
             </h1>

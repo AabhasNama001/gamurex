@@ -128,7 +128,7 @@ const CategSection = () => {
     >
       <h1
         ref={headingRef}
-        className="text-3xl md:text-4xl lg:text-6xl font-bold text-center mb-10 md:mt-20 lg:mt-80 text-white"
+        className="text-3xl md:text-4xl lg:text-6xl font-bold text-center mb-10 md:mt-20 lg:mt-40 text-white"
       >
         CATEGORIES
       </h1>

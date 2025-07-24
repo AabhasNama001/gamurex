@@ -8,14 +8,51 @@ import test3 from "../../assets/images/testimonial/test9.webp";
 import test4 from "../../assets/images/testimonial/test10.webp";
 import test5 from "../../assets/images/testimonial/test11.webp";
 import test6 from "../../assets/images/testimonial/test12.webp";
+import bg from "../../assets/images/bg.webp";
 
 const testimonials = [
-  { name: "Syble F. Romans", address: "from London", stars: "⭐⭐⭐⭐⭐", desc: "These headsets deliver clear audio, enhancing every gaming session. Highly recommended!", image: test1 },
-  { name: "Earl S. West", address: "from Wellington", stars: "⭐⭐⭐⭐⭐", desc: "The mouse is incredibly precise, perfect for competitive gaming. A true game-changer.", image: test2 },
-  { name: "Sally H. McDuffie", address: "from California", stars: "⭐⭐⭐⭐⭐", desc: "Controllers are ergonomic and responsive, making long gaming marathons comfortable.", image: test3 },
-  { name: "Joseph S. Thomas", address: "from Germany", stars: "⭐⭐⭐⭐⭐", desc: "Powerful CPU ensures smooth performance, no lag even during intense gaming. Top-tier!", image: test4 },
-  { name: "Timothy A. Thompson", address: "from Washington D.C", stars: "⭐⭐⭐⭐⭐", desc: "Comfortable headsets with immersive sound, perfect for communication and single-player.", image: test5 },
-  { name: "Pretty S. Pots", address: "from Peru", stars: "⭐⭐⭐⭐⭐", desc: "Gaming mouse offers excellent grip and customizable buttons, boosting my gameplay.", image: test6 },
+  {
+    name: "Syble F. Romans",
+    address: "from London",
+    stars: "⭐⭐⭐⭐⭐",
+    desc: "These headsets deliver clear audio, enhancing every gaming session. Highly recommended!",
+    image: test1,
+  },
+  {
+    name: "Earl S. West",
+    address: "from Wellington",
+    stars: "⭐⭐⭐⭐⭐",
+    desc: "The mouse is incredibly precise, perfect for competitive gaming. A true game-changer.",
+    image: test2,
+  },
+  {
+    name: "Sally H. McDuffie",
+    address: "from California",
+    stars: "⭐⭐⭐⭐⭐",
+    desc: "Controllers are ergonomic and responsive, making long gaming marathons comfortable.",
+    image: test3,
+  },
+  {
+    name: "Joseph S. Thomas",
+    address: "from Germany",
+    stars: "⭐⭐⭐⭐⭐",
+    desc: "Powerful CPU ensures smooth performance, no lag even during intense gaming. Top-tier!",
+    image: test4,
+  },
+  {
+    name: "Timothy A. Thompson",
+    address: "from Washington D.C",
+    stars: "⭐⭐⭐⭐⭐",
+    desc: "Comfortable headsets with immersive sound, perfect for communication and single-player.",
+    image: test5,
+  },
+  {
+    name: "Pretty S. Pots",
+    address: "from Peru",
+    stars: "⭐⭐⭐⭐⭐",
+    desc: "Gaming mouse offers excellent grip and customizable buttons, boosting my gameplay.",
+    image: test6,
+  },
 ];
 
 const Testimonial = () => {
@@ -146,7 +183,10 @@ const Testimonial = () => {
   }, []);
 
   return (
-    <div className="py-24 px-4 sm:px-6 lg:px-20 bg-cover overflow-hidden text-white">
+    <div
+      style={{ backgroundImage: `url(${bg})` }}
+      className="py-24 px-4 sm:px-6 lg:px-20 bg-cover overflow-hidden text-white"
+    >
       <div className="text-center mb-16 h-[250px]">
         <h2
           ref={headingRef}

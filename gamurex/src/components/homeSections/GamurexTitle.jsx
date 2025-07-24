@@ -40,7 +40,7 @@ const GamurexTitle = ({ imageUrls }) => {
     if (!imagesLoaded) return;
 
     const isMobile = window.innerWidth < 640;
-    const delay = isMobile ? 0.6 : 5.5;
+    const delay = isMobile ? 0.1 : 3.2;
 
     gsap.fromTo(
       gamurexRef.current,

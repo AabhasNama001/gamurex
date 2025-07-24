@@ -58,7 +58,7 @@ const MyJourney = () => {
             delay: i * 0.1,
             scrollTrigger: {
               trigger: el,
-              start: "top 95%",
+              start: "top 85%",
               toggleActions: "play none none reset",
             },
           }
