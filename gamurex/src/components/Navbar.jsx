@@ -180,7 +180,7 @@ const Navbar = () => {
   }, [navigate]);
 
   return (
-    <nav className="w-full text-white shadow-md fixed top-6 left-0 z-50">
+    <nav className="w-full text-white fixed top-6 left-0 z-50">
       <div className="max-w-7xl mb-4 mx-auto flex items-center justify-between backdrop-blur-sm px-4 py-3 rounded-4xl">
         {/* Hamburger */}
         <button

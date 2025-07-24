@@ -7,6 +7,6 @@ import { ToastContainer } from "react-toastify";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <App />
-    <ToastContainer position="top-center" />
+    <ToastContainer autoClose={3000} draggable theme="dark" position="top-center" />
   </BrowserRouter>
 );

@@ -29,7 +29,7 @@ const testimonials = [
     name: "Sally H. McDuffie",
     address: "from California",
     stars: "⭐⭐⭐⭐⭐",
-    desc: "Controllers are ergonomic and responsive, making long gaming marathons comfortable.",
+    desc: "Controllers are ergonomic , making long gaming marathons comfortable.",
     image: test3,
   },
   {
@@ -43,7 +43,7 @@ const testimonials = [
     name: "Timothy A. Thompson",
     address: "from Washington D.C",
     stars: "⭐⭐⭐⭐⭐",
-    desc: "Comfortable headsets with immersive sound, perfect for communication and single-player.",
+    desc: "Comfortable headsets with immersive sound, perfect for communication.",
     image: test5,
   },
   {
