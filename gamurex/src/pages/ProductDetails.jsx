@@ -141,11 +141,16 @@ const ProductDetails = () => {
               {isFav ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
             </button>
 
-            <img
-              src={image}
-              alt={title}
-              className="w-72 h-72 object-contain sm:w-90 sm:h-90 lg:w-120 lg:h-120"
-            />
+            <div className="relative group w-fit h-fit rounded-2xl overflow-hidden">
+              <img
+                src={image}
+                alt={title}
+                className="w-72 h-72 object-contain sm:w-90 sm:h-90 lg:w-120 lg:h-120 transition duration-300 z-10 relative"
+              />
+
+              {/* Radiating color glow */}
+              <div className="absolute inset-0 pointer-events-none rounded-[50%] before:absolute before:inset-0 before:rounded-[50%] before:opacity-0 before:scale-75 before:transition-all before:duration-500 before:blur-2xl group-hover:before:opacity-60 group-hover:before:scale-125 before:bg-[radial-gradient(circle,rgba(255,255,255,0.5),rgba(255,255,255,0.2),transparent_80%)]" />
+            </div>
           </div>
 
           {/* Right: Info */}

@@ -22,7 +22,7 @@ const Favourites = () => {
   return (
     <div
       style={{ backgroundImage: `url(${bgSpace})` }}
-      className="min-h-screen bg-cover pt-40 px-6 py-16"
+      className="min-h-screen bg-cover py-40 px-6"
     >
       <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 text-blue-700 dark:text-blue-300">
         Your Favourites
