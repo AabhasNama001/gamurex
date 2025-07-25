@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import bgVid3 from "../../src/assets/videos/bgVid3.webm";
 import founderBanner from "../assets/images/founderBanner.webp";
 import RibbonCursor from "../components/homeSections/RibbonCursor";
-import TestimonialDemo from "../components/homeSections/TestimonialDemo";
 
 // Lazy load heavy sections
 const VideoIntro = lazy(() => import("../components/homeSections/VideoIntro"));
@@ -17,8 +16,8 @@ const Description = lazy(() =>
 const CategSection = lazy(() =>
   import("../components/homeSections/categSection")
 );
-const Testimonial = lazy(() =>
-  import("../components/homeSections/Testimonial")
+const TestimonialDemo = lazy(() =>
+  import("../components/homeSections/TestimonialDemo")
 );
 
 const Home = () => {
