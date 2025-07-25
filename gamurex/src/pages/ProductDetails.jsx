@@ -9,7 +9,7 @@ import bgSpace from "../assets/images/bg.webp";
 import ProductTabs from "../components/productSections/ProductTabs";
 import TrustAndPolicySection from "../components/productSections/TrustAndPolicySection";
 import ExploreSetup from "../components/productSections/ExploreSetup";
-import CustomCursor from "../components/productSections/CustomCursor";
+import RibbonCursor from "../components/homeSections/RibbonCursor";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -164,8 +164,7 @@ const ProductDetails = () => {
 
   return (
     <div>
-      <CustomCursor />
-
+      <RibbonCursor />
       <div
         style={{ backgroundImage: `url(${bgSpace})` }}
         className="min-h-screen bg-cover pt-28 px-6 lg:px-28 pb-10"
