@@ -7,7 +7,7 @@ import {
   useMemo,
 } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FiX, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
+import { FiX, FiHeart, FiShoppingCart, FiUser, FiLogOut } from "react-icons/fi";
 import gsap from "gsap";
 import SplitType from "split-type";
 import { isAuthenticated, logout } from "../utils/auth";
@@ -169,14 +169,14 @@ const Navbar = () => {
     };
   }, []);
 
-  const handleUserClick = useCallback(() => {
-    if (isAuthenticated()) {
-      logout();
-      toast.success("Logged out successfully!");
-      navigate("/login");
-    } else {
-      navigate("/register");
-    }
+  const handleLogin = useCallback(() => {
+    navigate("/login");
+  }, [navigate]);
+
+  const handleLogout = useCallback(() => {
+    logout();
+    toast.success("Logged out successfully!");
+    navigate("/login");
   }, [navigate]);
 
   return (
@@ -205,11 +205,19 @@ const Navbar = () => {
           <NavLink to="/cart" aria-label="Cart">
             <FiShoppingCart className="cursor-pointer hover:text-blue-500" />
           </NavLink>
-          <FiUser
-            onClick={handleUserClick}
-            className="cursor-pointer hover:text-gray-600"
-            aria-label={isAuthenticated() ? "Logout" : "Register"}
-          />
+          {isAuthenticated() ? (
+            <FiLogOut
+              onClick={handleLogout}
+              className="cursor-pointer hover:text-gray-600"
+              aria-label="Logout"
+            />
+          ) : (
+            <FiUser
+              onClick={handleLogin}
+              className="cursor-pointer hover:text-gray-600"
+              aria-label="Login"
+            />
+          )}
         </div>
       </div>
 
