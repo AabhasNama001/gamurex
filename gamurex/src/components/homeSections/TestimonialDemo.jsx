@@ -5,6 +5,7 @@ import test3 from "../../assets/images/testimonial/test9.webp";
 import test4 from "../../assets/images/testimonial/test10.webp";
 import test5 from "../../assets/images/testimonial/test11.webp";
 import test6 from "../../assets/images/testimonial/test12.webp";
+import bg from "../../assets/images/bg.webp";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -68,12 +69,14 @@ const testimonials = [
     desc: "Gaming mouse offers excellent grip and customizable buttons, boosting my gameplay.",
     image: test6,
   },
-  
 ];
 
 export default function TestimonialDemo() {
   return (
-    <section className="w-full px-4 py-10 sm:px-6 md:px-10 lg:px-20">
+    <section
+      style={{ backgroundImage: `url(${bg})` }}
+      className="w-full bg-cover px-4 py-10 sm:px-6 md:px-10 lg:px-20"
+    >
       <div className="text-center my-16">
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight">
           Client Stories{" "}
@@ -116,7 +119,7 @@ export default function TestimonialDemo() {
       >
         {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index} className="swiper-slide">
-            <div className="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg px-4 py-6 bg-white/10 dark:bg-white/5 backdrop-blur-md rounded-2xl shadow-md">
+            <div className="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg px-4 py-6 bg-white/20 dark:bg-white/10 backdrop-blur-md rounded-2xl shadow-md">
               <div className="testimonials-profile-circle mb-4">
                 <img
                   src={testimonial.image}
